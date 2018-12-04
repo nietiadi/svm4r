@@ -7,9 +7,9 @@ def get_operator() -> str:
     return '-' 
 
 
-def get_question(operator:str) -> (str, int):
-  num1 = randint(0,20)
-  num2 = randint(0,20)
+def get_question(operator:str, lower_limit:int, upper_limit:int) -> (str, int):
+  num1 = randint(lower_limit,upper_limit)
+  num2 = randint(lower_limit,upper_limit)
   if operator == "+":
     return (""+str(num1)+operator+str(num2)+"=", num1+num2)
   elif operator == "-":
@@ -23,11 +23,16 @@ def get_question(operator:str) -> (str, int):
 
 #print(get_operator())
 MAX = 10
+lower_limit = 5
+upper_limit = 30
 wrong = 0
 for i in range(1,MAX+1):
   op = get_operator();
-  ques = get_question(op);
-  res = input(ques[0])
+  ques = get_question(op, lower_limit, upper_limit);
+  res = input("("+str(i)+") "+ques[0])
   if int(res.strip()) != ques[1]:
     wrong += 1
-print("Wrong answer:"+str(wrong))    
+    print("Wrong!")
+print("Wrong answers:"+str(wrong))    
+
+#HERE: add exception: not a number
