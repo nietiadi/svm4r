@@ -1,6 +1,5 @@
 from random import randint
 
-
 def get_operator() -> str:
   if randint(0,1):
     return '+'
