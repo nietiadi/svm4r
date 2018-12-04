@@ -24,7 +24,7 @@ def get_question(operator:str, lower_limit:int, upper_limit:int) -> (str, int):
 #print(get_operator())
 MAX = 10
 lower_limit = 5
-upper_limit = 30
+upper_limit = 20
 wrong = 0
 for i in range(1,MAX+1):
   op = get_operator();
