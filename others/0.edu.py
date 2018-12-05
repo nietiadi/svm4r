@@ -20,6 +20,7 @@ def get_question(operator:str, lower_limit:int, upper_limit:int) -> (str, int):
   else:
     return "Not supported"
     
+
 #version 1
 def input_an_integer1(prompt:str) -> int:
   while True:
@@ -31,6 +32,7 @@ def input_an_integer1(prompt:str) -> int:
       continue
     return res_int
 
+
 #version 2
 def input_an_integer2(prompt:str) -> int:
   while True:
@@ -41,6 +43,7 @@ def input_an_integer2(prompt:str) -> int:
     else:
       return int(res.strip())
   
+
 #==== main ====
 MAX = 2
 lower_limit = 5
