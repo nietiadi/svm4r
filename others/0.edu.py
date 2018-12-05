@@ -20,19 +20,37 @@ def get_question(operator:str, lower_limit:int, upper_limit:int) -> (str, int):
   else:
     return "Not supported"
     
+#version 1
+def input_an_integer1(prompt:str) -> int:
+  while True:
+    res = input(prompt)
+    try:
+      res_int = int(res.strip())
+    except:
+      print("Not a number. Try again.")
+      continue
+    return res_int
 
-#print(get_operator())
-MAX = 10
+#version 2
+def input_an_integer2(prompt:str) -> int:
+  while True:
+    res = input(prompt)
+    if not res.strip().isdigit():
+      print("Not a number. Try again.")
+      continue
+    else:
+      return int(res.strip())
+  
+#==== main ====
+MAX = 2
 lower_limit = 5
 upper_limit = 20
 wrong = 0
 for i in range(1,MAX+1):
   op = get_operator();
   ques = get_question(op, lower_limit, upper_limit);
-  res = input("("+str(i)+") "+ques[0])
-  if int(res.strip()) != ques[1]:
+  res = input_an_integer2("("+str(i)+") "+ques[0])
+  if res != ques[1]:
     wrong += 1
-    print("Wrong!")
+    #print("Wrong!")
 print("Wrong answers:"+str(wrong))    
-
-#HERE: add exception: not a number
