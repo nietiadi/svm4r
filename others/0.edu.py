@@ -48,7 +48,11 @@ def input_an_integer2(prompt:str) -> int:
 #==== main ====
 MAX = 20
 lower_limit = 5
+<<<<<<< HEAD
 upper_limit = 50
+=======
+upper_limit = 30
+>>>>>>> cc13dc91fd9aaee033245a27e72cc1fae8be12de
 wrong = 0
 for i in range(1,MAX+1):
   op = get_operator();
