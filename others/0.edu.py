@@ -48,7 +48,7 @@ def input_an_integer2(prompt:str) -> int:
 #==== main ====
 MAX = 20
 lower_limit = 5
-upper_limit = 20
+upper_limit = 50
 wrong = 0
 for i in range(1,MAX+1):
   op = get_operator();
@@ -57,6 +57,6 @@ for i in range(1,MAX+1):
   if res != ques[1]:
     wrong += 1
     #print("Wrong!")
-    score = int((MAX-wrong)*100/MAX)
+score = int((MAX-wrong)*100/MAX)
 print("Wrong answers:"+str(wrong))    
 print("Your score:"+str(score))    
