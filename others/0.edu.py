@@ -1,4 +1,5 @@
 from random import randint
+import time
 
 
 def get_operator() -> str:
@@ -50,6 +51,7 @@ MAX = 20
 lower_limit = 5
 upper_limit = 50
 wrong = 0
+time_start = time.time()
 for i in range(1,MAX+1):
   op = get_operator();
   ques = get_question(op, lower_limit, upper_limit);
@@ -57,6 +59,9 @@ for i in range(1,MAX+1):
   if res != ques[1]:
     wrong += 1
     #print("Wrong!")
+time_end = time.time()
 score = int((MAX-wrong)*100/MAX)
+diff = time_end-time_start
 print("Wrong answers:"+str(wrong))    
 print("Your score:"+str(score))    
+print("Time you used:", int(diff//60), " minutes")
