@@ -62,6 +62,6 @@ for i in range(1,MAX+1):
 time_end = time.time()
 score = int((MAX-wrong)*100/MAX)
 diff = time_end-time_start
-print("Wrong answers:"+str(wrong))    
-print("Your score:"+str(score))    
-print("Time you used:", int(diff//60), " minutes")
+print("Wrong answers:\t"+str(wrong))    
+print("Your score:\t"+str(score))    
+print("Time used:\t"+str(int(diff//60))+" minutes")
