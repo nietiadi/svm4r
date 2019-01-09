@@ -3,6 +3,7 @@
 
 def generate_all_possible_combinations(num_of_variables=2):
   """
+  2 propositions: use 1, 2, ..., 8 clauses.
   clauses = list()
   for i in range(0, num_of_variables):
     clauses = add_another_variable(clauses)
@@ -10,7 +11,8 @@ def generate_all_possible_combinations(num_of_variables=2):
     clauses[i].insert(0, i) #insert line number
   write_clauses(clauses, num_of_variables)
   """
-  length = total_number_of_clauses(num_of_variables)
+  length = total_number_of_clauses(num_of_variables) # when it is 2, then return 8
+HERE
   count = 0
   for i in range(1, length+1):
     count = clause_combination(length, i)
@@ -18,7 +20,7 @@ def generate_all_possible_combinations(num_of_variables=2):
   print("end"+str(1))
 
 def total_number_of_clauses(num_of_variables:int) -> int:
-  return 3 ** num_of_variables-1
+  return (3 ** num_of_variables)-1
   
 
 def add_another_variable(clauses:list) -> list:
