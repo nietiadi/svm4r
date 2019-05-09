@@ -1,0 +1,16 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+add_another_variable	0.clauses.py	/^def add_another_variable(clauses:list) -> list:$/;"	f
+add_another_variable	1.combinations.py	/^def add_another_variable(clauses:list) -> list:$/;"	f
+csv	0.clauses.py	/^  import csv$/;"	i
+csv	1.combinations.py	/^  import csv$/;"	i
+generate_all_possible_clauses	0.clauses.py	/^def generate_all_possible_clauses(num_of_variables=2):$/;"	f
+generate_all_possible_combinations	1.combinations.py	/^def generate_all_possible_combinations(num_of_variables=2):$/;"	f
+pprint	0.clauses.py	/^from pprint import pprint$/;"	i
+total_number_of_clauses	1.combinations.py	/^def total_number_of_clauses(num_of_variables:int) -> int:$/;"	f
+write_clauses	0.clauses.py	/^def write_clauses(clauses: list, num):$/;"	f
+write_clauses	1.combinations.py	/^def write_clauses(clauses: list, num):$/;"	f

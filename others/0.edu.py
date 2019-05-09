@@ -47,9 +47,9 @@ def input_an_integer2(prompt:str) -> int:
   
 
 #==== main ====
-MAX = 20
-lower_limit = 5
-upper_limit = 50
+MAX = 30
+lower_limit = 1
+upper_limit = 100
 wrong = 0
 time_start = time.time()
 for i in range(1,MAX+1):
