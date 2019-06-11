@@ -38,7 +38,7 @@ def add_another_variable(clauses:list) -> list:
 
 def write_clauses(clauses: list, num):
   import csv
-  with open('table_of_clauses_for_'+str(num)+'_propositoins.csv', 'wt') as fout:
+  with open('data/table_of_clauses_for_'+str(num)+'_propositoins.csv', 'wt') as fout:
     csvout = csv.writer(fout)
     csvout.writerows(clauses)
 

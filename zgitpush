@@ -1,4 +1,4 @@
-git add . && echo -e "==== finish adding ====\n" && \
+#git add . && echo -e "==== finish adding ====\n" && \
 git status && git commit -m "auto" && \
 echo -e "==== finish committing ====\n" && \
 git push origin master && echo -e "==== finish pushing ====\n\n"
