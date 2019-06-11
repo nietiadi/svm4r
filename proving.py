@@ -1,21 +1,34 @@
 #!/usr/bin/python3
-# Generate all possible combinations of clauses
+"""
+using ctl-rp to prove all proofs and give the answer, which is either 'sat' or 'unsat'
+
+"""
+
 import itertools
 import csv
 
-def get_proofs(num_of_propositions=2, with_empty_clause=False):
+def proving(num_of_propositions=2, with_empty_clause=False):
   """
-  create the csv file consisting of all combinations of different clauses
+  create the csv file containing the results from ctl-rp
   """
   if with_empty_clause:
-    num_of_clauses = 3**num_of_propositions;
     fname = 'data/proofs_with_empty_clause_for_'+\
     str(num_of_propositions)+'_propositoins.csv'
   else:
-    num_of_clauses = 3**num_of_propositions-1;
     fname = 'data/proofs_without_empty_clause_for_'+\
     str(num_of_propositions)+'_propositoins.csv'
-  #print(length)
+  
+  fname = 'test.dat'
+  with open(fname) as csvfile:
+    csvin = csv.reader(csvfile)
+    for row in csvin:
+      #print(', '.join(row))
+      print(row)
+      HERE
+
+
+
+  """
   rows = list()
   y = 0
   for x in itertools.product(range(0,2), repeat=num_of_clauses):
@@ -29,7 +42,8 @@ def get_proofs(num_of_propositions=2, with_empty_clause=False):
   with open(fname, 'wt') as fout:
     csvout = csv.writer(fout)
     csvout.writerows(rows)
+  """
 
 #main
-get_proofs(2, False);
-get_proofs(2, True);
+proving(2, False);
+#proving(2, True);
