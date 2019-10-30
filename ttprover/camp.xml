@@ -1,0 +1,11 @@
+<imp>
+  <and>
+    <imp>
+      <and><s/><w/></and>
+      <c/>
+    </imp>
+    <not><c/></not>
+    <s/>
+  </and>
+  <not><w/></not>
+</imp>

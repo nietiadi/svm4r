@@ -1,0 +1,49 @@
+Development Python under Linux
+
+1) Putty
+
+server, port => xxx@xxx, 22
+
+encoding => uft8
+
+font => couier, 16
+
+defaultforground => 0, 0, 0
+
+defaultbackgroup => 255, 255, 255
+
+save the session
+
+close putty
+
+reopen  and load
+
+
+
+2) Open two terminals
+
+one for running and one for writing codes
+
+table key, uparrow key
+
+!v, !!
+
+
+
+3) vi commands
+
+:w
+
+:q
+
+:q!
+
+:3 
+
+4) advanced editing
+working circle:
+  editing the file
+  ctrl+z
+  !p
+  fg
+
