@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # Generate all possible clauses
 
+
 from pprint import pprint
 
 def generate_all_possible_clauses(num_of_variables=2):
