@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # Generate all possible clauses
-
+import sys
 
 from pprint import pprint
 
@@ -67,5 +67,22 @@ import sys
 generate_all_possible_clauses(int(sys.argv[1]));
 """
 
+def verify_arg(arg):
+  v = True
+  if len(arg)!=2:
+    v = False
+  str = arg[1]
+  if str.isdigits():
+    num = int(str)
+  if not(2<=num<=10):
+    v = False
+  if v:
+    print('The argument is wrong. The argument is an integer between 2 and 10, inclusively')
+    print('Example: python3 clause.py 2')
+    sys.exit(0)
+  else:
+    return num
+
 #main
-generate_all_possible_clauses(2);
+np = verify_arg(sys.argv)
+#generate_all_possible_clauses(2);
