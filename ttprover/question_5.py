@@ -6,14 +6,14 @@ def set_prop(root):
     list_prop = list()
     stack = [root] 
     while len(stack)!=0:
-        node = stack.pop()
+        node = stack.pop() #remove the last item
         #print(node.tag+' ')
         if node.tag not in OPERATORS:
             list_prop.append(node.tag)
         else:
             for child in node:
-                #stack.append(child) #BFS
-                stack.insert(0, child)  # DFS
+                #stack.append(child) #DFS
+                stack.insert(0, child)  # BFS
     return set(list_prop)
 
 
