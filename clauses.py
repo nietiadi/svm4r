@@ -80,25 +80,33 @@ def verify_arg(arg):
     """
     valid = True
     num = 0
+    result = None
     if len(arg) != 2:
         valid = False
+        return valid, -1
     else:
         str = arg[1]
         if not str.isdigits():
             valid = False
+            return valid, -2
         else:
             num = int(str)
             if not (2 <= num <= 10):
                 valid = False
+                return valid, -3
+    return valid, num
 
-    if not valid:
+
+
+# main
+if __name__=='__main__':
+    result = verify_arg(sys.argv)
+    np = 0
+
+    if not result[0]:
         print('The argument is wrong. The argument is an integer between 2 and 10, inclusively')
         print('Example: python3 clause.py 2')
         sys.exit(0)
     else:
-        return num
-
-
-# main
-np = verify_arg(sys.argv)
+        np = result[1]
 # generate_all_possible_clauses(2);
