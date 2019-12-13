@@ -8,7 +8,7 @@ class TestClauses(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_length(self):
+    def test_1_verify_arg(self):
         result = clauses.verify_arg(["test", "1", "2"])
         self.assertEqual(result, (False, -1))
 

@@ -86,7 +86,7 @@ def verify_arg(arg):
         return valid, -1
     else:
         str = arg[1]
-        if not str.isdigits():
+        if not str.isdigit():
             valid = False
             return valid, -2
         else:
