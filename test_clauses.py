@@ -12,7 +12,6 @@ class TestClauses(unittest.TestCase):
         result = clauses.verify_arg(["test", "1", "2"])
         self.assertEqual(result, (False, -1))
 
-
     def test_2_verify_arg(self):
         result = clauses.verify_arg(["test", "a"])
         self.assertEqual(result, (False, -2))

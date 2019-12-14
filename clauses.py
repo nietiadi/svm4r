@@ -102,7 +102,6 @@ def verify_arg(arg):
 if __name__=='__main__':
     result = verify_arg(sys.argv)
     np = 0
-
     if not result[0]:
         print('The argument is wrong. The argument is an integer between 2 and 10, inclusively')
         print('Example: python3 clause.py 2')
