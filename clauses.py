@@ -3,9 +3,19 @@
 import sys
 
 from pprint import pprint
+import itertools
 
+def generate_all_possible_clauses(num_of_prop=2):
+    """
+    format:
+    p1's value,p2's value
+    0,0 => 1, empty clause
+    1,-1 => 2, p1 v ~p2
+    return an object of itertools.product
+    """
+    return itertools.product(range(-1, 2), repeat=num_of_prop)
 
-def generate_all_possible_clauses(num_of_variables=2):
+def generate_all_possible_clauses_o01(num_of_variables=2):
     """ format:
     number,p1's value,p2's value
     1,0,0 => 1, empty clause
@@ -46,37 +56,12 @@ def write_clauses(clauses: list, num):
         csvout = csv.writer(fout)
         csvout.writerows(clauses)
 
-
-"""
-for i in range(-1,2):
-  print('Hello World %d', i)
-"""
-
-"""
-count = 1;
-for m in ['0', '1', '-1']:
-  for n in ['0', '1', '-1']:
-    #print('%d,%s,%s' % (count, m, n))
-    print('{},{},{}'.format(count, m, n))
-    count+=1
-tmp = list()
-tmp = add_another_variable(tmp);
-pprint(tmp)
-tmp = add_another_variable(tmp);
-pprint(tmp)
-"""
-
-"""
-import sys
-generate_all_possible_clauses(int(sys.argv[1]));
-"""
-
-
 def verify_arg(arg):
     """
     Verify the argument, which indicates the number of the propositions involved. The number has to be in [2, 10]
     :param arg: the number of propositions, which a user inputs
-    :return: the valid number of propositions
+    :return: the tuple, whose first element is a boolean indicating whether args is valid or not and
+    whose second element is the number of propositions or error code.
     """
     valid = True
     num = 0
