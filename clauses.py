@@ -9,14 +9,17 @@ def generate_all_possible_clauses(num_of_prop=2):
     """
     format:
     p1's value,p2's value
-    0,0 => 1, empty clause
-    1,-1 => 2, p1 v ~p2
+    0,0 => empty clause
+    1,2 => p1 v ~p2
     return an object of itertools.product
     """
-    return itertools.product(range(-1, 2), repeat=num_of_prop)
+    #return itertools.product(range(-1, 2), repeat=num_of_prop)
+    return itertools.product(range(0, 3), repeat=num_of_prop)
 
 def generate_all_possible_clauses_o01(num_of_variables=2):
-    """ format:
+    """
+    Deprecated
+    format:
     number,p1's value,p2's value
     1,0,0 => 1, empty clause
     2,1,-1 => 2, p1 v ~p2
@@ -35,6 +38,11 @@ def generate_all_possible_clauses_o01(num_of_variables=2):
 
 
 def add_another_variable(clauses: list) -> list:
+    """
+    Deprecated
+    :param clauses:
+    :return:
+    """
     three = [0, 1, -1]
     new_list = list()
     if len(clauses) == 0:
@@ -51,6 +59,12 @@ def add_another_variable(clauses: list) -> list:
 
 
 def write_clauses(clauses: list, num):
+    import csv
+    with open('data/clauses_for_' + str(num) + '_propositoins.csv', 'wt') as fout:
+        csvout = csv.writer(fout)
+        csvout.writerows(clauses)
+
+def write_clauses_tofile(clauses: itertools.product, num):
     import csv
     with open('data/clauses_for_' + str(num) + '_propositoins.csv', 'wt') as fout:
         csvout = csv.writer(fout)
@@ -93,4 +107,5 @@ if __name__=='__main__':
         sys.exit(0)
     else:
         np = result[1]
-# generate_all_possible_clauses(2);
+    clauses = generate_all_possible_clauses(np)
+    write_clauses_tofile(clauses, np)
