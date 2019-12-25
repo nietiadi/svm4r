@@ -16,7 +16,7 @@ def generate_all_possible_clauses(num_of_prop=2):
     #return itertools.product(range(-1, 2), repeat=num_of_prop)
     return itertools.product(range(0, 3), repeat=num_of_prop)
 
-def generate_all_possible_clauses_o01(num_of_variables=2):
+def generate_all_possible_clauses_old(num_of_variables=2):
     """
     Deprecated
     format:
