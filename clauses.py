@@ -5,6 +5,7 @@ import sys
 from pprint import pprint
 import itertools
 
+
 def generate_all_possible_clauses(num_of_prop=2):
     """
     format:
@@ -13,8 +14,9 @@ def generate_all_possible_clauses(num_of_prop=2):
     1,2 => p1 v ~p2
     return an object of itertools.product
     """
-    #return itertools.product(range(-1, 2), repeat=num_of_prop)
+    # return itertools.product(range(-1, 2), repeat=num_of_prop)
     return itertools.product(range(0, 3), repeat=num_of_prop)
+
 
 def generate_all_possible_clauses_old(num_of_variables=2):
     """
@@ -24,7 +26,7 @@ def generate_all_possible_clauses_old(num_of_variables=2):
     1,0,0 => 1, empty clause
     2,1,-1 => 2, p1 v ~p2
     """
-    if (num_of_variables > 10):
+    if num_of_variables > 10:
         print("Error: Too many propositions. " +
               "The number of propositions should be less than or equal to 10")
         return
@@ -64,11 +66,13 @@ def write_clauses(clauses: list, num):
         csvout = csv.writer(fout)
         csvout.writerows(clauses)
 
+
 def write_clauses_tofile(clauses: itertools.product, num):
     import csv
     with open('data/clauses_for_' + str(num) + '_propositoins.csv', 'wt') as fout:
         csvout = csv.writer(fout)
         csvout.writerows(clauses)
+
 
 def verify_arg(arg):
     """
@@ -79,7 +83,6 @@ def verify_arg(arg):
     """
     valid = True
     num = 0
-    result = None
     if len(arg) != 2:
         valid = False
         return valid, -1
@@ -96,9 +99,8 @@ def verify_arg(arg):
     return valid, num
 
 
-
 # main
-if __name__=='__main__':
+if __name__ == '__main__':
     result = verify_arg(sys.argv)
     np = 0
     if not result[0]:

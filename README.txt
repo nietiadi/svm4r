@@ -13,5 +13,5 @@
 3.generate_all_data.sh: generate all data
 
 current_job:
-Download ctlrp and make runable
+Download ctlrp and make it runable
 according to the rows of the csv file, create input files for ctl-rp;
