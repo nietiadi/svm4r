@@ -1,0 +1,91 @@
+1. How to run CTL-RP
+1.1 Result only (Valid; Not valid; Satisfiable; Unsatisfiable)
+(For 32bit system)
+./ctlrp21_i686 example.01.ctl
+(For 64bit system)
+./ctlrp21_x86_64 example.01.ctl
+
+1.2 Result, raw proofs and debugging information
+./ctlrpXX -p example.01.ctl
+
+1.3 Result and the corresponding proof 
+./ctlrp.proof.sh example.01.ctl
+[Res] ---- The clause is derived by Step resolution
+[ERES] --- The clause is derived by eventuality resolution
+[Red] ---- The clause is derived by reduction
+
+N.B. This approach requires two files, "Clause.java" and "ExtractProof02.java"
+and the compilation of these two files, i.e. run the command "javac *.java".
+
+2. Operators are the following:
+and, or, not, implies;
+AX, AG, AF, AW, AU;
+EX, EG, EF, EW, EU;
+
+3. Explanation of the syntax of input (Use example.01.ctl as an example)
+
+begin_problem(test2). ----> start of the prblem
+
+list_of_descriptions. ----> description (the content here has no effect for
+the proof)
+name({*test 2*}).
+author({*Lan Zhang*}).
+status(unsatisfiable).
+description({*Test a unsatisfiable CNF clauses set*}).
+end_of_list.
+
+list_of_ctlformulae(conjectures).  ----> "conjectures" for testing
+validity; "axioms" for testing satisfiability 
+  %AG p <-> ~ EF ~p ----> how to write comments
+  and(implies(AG(p), not(EF(not(p)))),
+      implies(not(EF(not(p))), AG(p))). ----> actually formula
+end_of_list.
+
+end_problem. ----> end of the problem
+
+4. Explain the syntax of proofs generating by "ctlrp.proof.sh"
+There is an example for "ctlrp.proof.sh example.01.ctl".
+--------------------------------------------------------------------------------
+-2[Inp] ||  new0002 ->  ind_2(~p)             
+-1[Inp] ||  new0003 ->  ind_1(~p)
+1[Inp] ||  -> new0001(0)*.
+2[Inp] || new0001(U)* -> new0002(U)* new0003(U)*.
+3[Inp] || new0004(U) -> new0004(app(V,U))*.
+4[Inp] || new0004(U)* -> p(U).
+5[Inp] || new0003(U)* -> new0004(U)*.
+6[Inp] || new0005(U) -> new0005(app(V,U))*.
+7[Inp] || new0005(U)* -> p(U).
+8[Inp] || new0002(U)* -> new0005(U)*.
+9[Res:1,2] ||  -> new0003(0) new0002(0)*.
+33[ERES2:-1,3,4,6,7] || new0003(U) p(U)* new0004(U) -> .
+59[ERES2:-2,3,4,6,7] || new0002(U) p(U)* new0005(U) -> .
+73[Res:7,59] || new0005(U) new0005(U) new0002(U)* -> .
+75[Red:73] || new0005(U) new0002(U)* -> .
+76[Red:8,75] || new0002(U)* -> .
+81[Res:9,76] ||  -> new0003(0)*.
+84[Res:4,33] || new0004(U) new0004(U) new0003(U)* -> .
+86[Red:84] || new0004(U) new0003(U)* -> .
+87[Red:5,86] || new0003(U)* -> .
+88[Res:81,87] ||  -> .
+--------------------------------------------------------------------------------
+
+4.1 The first column contains clause numbers. (If number<0, it is a sometime clause.)
+
+4.2 
+[inp] means the clause is from input.
+[Res:1,2] means the clause is derived from clause 1 and 2 by an application of
+a step resolution rule.
+[ERES2:-1,3,4] means the clause is derived from clause -1, 3 and 4 by an application of
+the eventuality resolution rule ERES2.
+
+4.3
+"p(U)" means "p";
+"ind_2(p)" means "EF(p)_ind2";
+"p(app(V,U))" means "AX(p)";
+"p(app(ind_1,U))" means "EX(p)_ind1";
+
+More examples:
+"new0004(U)* -> p(U)" means "new0004 => p";
+"new0002 ->  ind_2(~p)" means "new0002 => EF(~p)_ind2";
+"new0005(U) -> new0005(app(V,U))" means "new0005 => AX(new0005)";
+

@@ -1,0 +1,376 @@
+
+====================================  CTL-RP  ===================================
+
+====TWB input:
+((AG(p) -> ~(EF(~(p)))) & (~(EF(~(p))) -> AG(p)))
+====ctl:
+and((AG(p) => ~(EF(~(p)))), (~(EF(~(p))) => AG(p)))
+====ctl:add negation 
+~(and((AG(p) => ~(EF(~(p)))), (~(EF(~(p))) => AG(p))))
+====ctl:NNF 
+or(and(AG(p), EF(~(p))), and(AG(p), EF(~(p))))
+====ctl:SNF 
+
+==== clause [1]: implies(start, new0001)
+==== clause [2]: implies(T, or(not(new0001), new0002, new0003))
+==== clause [3]: implies(new0003, EF 1(not(p)))
+==== clause [4]: implies(new0004, AX(new0004))
+==== clause [5]: implies(T, or(not(new0004), p))
+==== clause [6]: implies(T, or(not(new0003), new0004))
+==== clause [7]: implies(new0002, EF 2(not(p)))
+==== clause [8]: implies(new0005, AX(new0005))
+==== clause [9]: implies(T, or(not(new0005), p))
+==== clause [10]: implies(T, or(not(new0002), new0005))
+##Input of determinate clauses
+1[0:Inp] ||  -> new0001(0)*.
+2[0:Inp] || new0001(U)* -> new0002(U)* new0003(U)*.
+3[0:Inp] || new0004(U) -> new0004(app(V,U))*.
+4[0:Inp] || new0004(U)* -> p(U).
+5[0:Inp] || new0003(U)* -> new0004(U)*.
+6[0:Inp] || new0005(U) -> new0005(app(V,U))*.
+7[0:Inp] || new0005(U)* -> p(U).
+8[0:Inp] || new0002(U)* -> new0005(U)*.
+##Input of sometime clauses
+E1. new0003 ->  ind_1(~p)
+
+E2. new0002 ->  ind_2(~p)
+
+##ProofInput Problem:
+1[0:Inp] ||  -> new0001(0)*.
+2[0:Inp] || new0001(U)* -> new0002(U) new0003(U).
+3[0:Inp] || new0004(U) -> new0004(app(V,U))*.
+4[0:Inp] || new0004(U) -> p(U)*.
+5[0:Inp] || new0003(U)* -> new0004(U).
+6[0:Inp] || new0005(U) -> new0005(app(V,U))*.
+7[0:Inp] || new0005(U) -> p(U)*.
+8[0:Inp] || new0002(U)* -> new0005(U).
+ This is a monadic Non-Horn problem without equality.
+ This is a problem that has, if any, a finite domain model.
+ There are no function symbols.
+ This is a problem that contains sort information.
+ The following monadic predicates have finite extensions: new0001.
+ Axiom clauses: 8 Conjecture clauses: 0
+ Inferences: IORe=1 
+ Reductions: RFMRR=2 RObv=1 RTaut=1 RFSub=1 RBSub=1 RCon=1 
+ Extras    : No Input Saturation, No Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1
+ Precedence: div > id > app > ls > p > new0001 > new0002 > new0003 > ind_1 > new0004 > ind_2 > new0005 > wind_1notp > wind_2notp > 0 > start > T
+ Ordering  : KBO
+Processed Problem:
+
+Worked Off Clauses:
+
+Usable Clauses:
+1[0:Inp] ||  -> new0001(0)*.
+7[0:Inp] || new0005(U) -> p(U)*.
+4[0:Inp] || new0004(U) -> p(U)*.
+8[0:Inp] || new0002(U)* -> new0005(U).
+5[0:Inp] || new0003(U)* -> new0004(U).
+2[0:Inp] || new0001(U)* -> new0003(U) new0002(U).
+6[0:Inp] || new0005(U) -> new0005(app(V,U))*.
+3[0:Inp] || new0004(U) -> new0004(app(V,U))*.
+	Given clause: 1[0:Inp] ||  -> new0001(0)*.
+	Given clause: 7[0:Inp] || new0005(U) -> p(U)*.
+	Given clause: 4[0:Inp] || new0004(U) -> p(U)*.
+	Given clause: 8[0:Inp] || new0002(U)* -> new0005(U).
+	Given clause: 5[0:Inp] || new0003(U)* -> new0004(U).
+	Given clause: 2[0:Inp] || new0001(U)* -> new0003(U) new0002(U).
+	Given clause: 9[0:Res:1.0,2.0] ||  -> new0003(0) new0002(0)*.
+	Given clause: 10[0:Res:9.1,8.0] ||  -> new0003(0)* new0005(0).
+	Given clause: 11[0:Res:10.0,5.0] ||  -> new0005(0) new0004(0)*.
+	Given clause: 6[0:Inp] || new0005(U) -> new0005(app(V,U))*.
+	Given clause: 3[0:Inp] || new0004(U) -> new0004(app(V,U))*.
+##ERES2:1 begin
+new0003 ->  ind_1(~p)
+##sometime clauses: end
+##current max clause number: 11
+Input Problem:
+12[0:Inp] || ls(U) p(app(V,U))* -> .
+ This is a monadic Horn problem without equality.
+ This is a problem that has, if any, a finite domain model.
+ There are no function symbols.
+ This is a problem that contains sort information.
+ Axiom clauses: 1 Conjecture clauses: 0
+ Inferences: IORe=1 
+ Reductions: RFMRR=2 RObv=1 RTaut=1 RFSub=1 RBSub=1 RCon=1 
+ Extras    : No Input Saturation, No Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1
+ Precedence: div > id > app > ls > p > new0001 > new0002 > new0003 > ind_1 > new0004 > ind_2 > new0005 > wind_1notp > wind_2notp > 0 > start > T
+ Ordering  : KBO
+Processed Problem:
+
+Worked Off Clauses:
+7[0:Inp] || new0005(U) -> p(U)*.
+4[0:Inp] || new0004(U) -> p(U)*.
+8[0:Inp] || new0002(U)* -> new0005(U).
+5[0:Inp] || new0003(U)* -> new0004(U).
+2[0:Inp] || new0001(U)* -> new0003(U) new0002(U).
+6[0:Inp] || new0005(U) -> new0005(app(V,U))*.
+3[0:Inp] || new0004(U) -> new0004(app(V,U))*.
+Usable Clauses:
+12[0:Inp] || ls(U) p(app(V,U))* -> .
+	Given clause: 12[0:Inp] || ls(U) p(app(V,U))* -> .
+	Given clause: 13[0:Res:7.1,12.1] || new0005(app(U,V))* ls(V) -> .
+	Given clause: 15[0:Res:6.1,13.0] || new0005(U) ls(U)* -> .
+	Given clause: 14[0:Res:4.1,12.1] || new0004(app(U,V))* ls(V) -> .
+	Given clause: 16[0:Res:3.1,14.0] || new0004(U) ls(U)* -> .
+##16 in T2
+
+##15 in T2
+Input Problem:
+17[0:Inp] || ls(U) new0004(app(V,U)) p(app(V,U))* -> .
+18[0:Inp] || ls(U) new0005(app(V,U)) p(app(V,U))* -> .
+ This is a monadic Horn problem without equality.
+ This is a problem that has, if any, a finite domain model.
+ There are no function symbols.
+ This is a problem that contains sort information.
+ Axiom clauses: 2 Conjecture clauses: 0
+ Inferences: IORe=1 
+ Reductions: RFMRR=2 RObv=1 RTaut=1 RFSub=1 RBSub=1 RCon=1 
+ Extras    : No Input Saturation, No Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1
+ Precedence: div > id > app > ls > p > new0001 > new0002 > new0003 > ind_1 > new0004 > ind_2 > new0005 > wind_1notp > wind_2notp > 0 > start > T
+ Ordering  : KBO
+Processed Problem:
+
+Worked Off Clauses:
+7[0:Inp] || new0005(U) -> p(U)*.
+4[0:Inp] || new0004(U) -> p(U)*.
+8[0:Inp] || new0002(U)* -> new0005(U).
+5[0:Inp] || new0003(U)* -> new0004(U).
+2[0:Inp] || new0001(U)* -> new0003(U) new0002(U).
+6[0:Inp] || new0005(U) -> new0005(app(V,U))*.
+3[0:Inp] || new0004(U) -> new0004(app(V,U))*.
+Usable Clauses:
+18[0:Inp] || ls(U) p(app(V,U))* new0005(app(V,U)) -> .
+17[0:Inp] || ls(U) p(app(V,U))* new0004(app(V,U)) -> .
+	Given clause: 18[0:Inp] || ls(U) p(app(V,U))* new0005(app(V,U)) -> .
+Obvious: 19[0:Res:7.1,18.1] || new0005(app(U,V))* ls(V) new0005(app(U,V))* -> . ==> 21[0:Obv:19.0] || ls(U) new0005(app(V,U))* -> .
+BSubsumption: 18[0:Inp] || ls(U) p(app(V,U))* new0005(app(V,U)) -> . by 21 
+FSubsumption: 20[0:Res:4.1,18.1] || new0004(app(U,V))* ls(V) new0005(app(U,V)) -> . by 21 0 
+	Given clause: 21[0:Obv:19.0] || ls(U) new0005(app(V,U))* -> .
+	Given clause: 22[0:Res:6.1,21.1] || new0005(U) ls(U)* -> .
+	Given clause: 17[0:Inp] || ls(U) p(app(V,U))* new0004(app(V,U)) -> .
+FSubsumption: 23[0:Res:7.1,17.1] || new0005(app(U,V)) ls(V) new0004(app(U,V))* -> . by 21 0 
+Obvious: 24[0:Res:4.1,17.1] || new0004(app(U,V))* ls(V) new0004(app(U,V))* -> . ==> 25[0:Obv:24.0] || ls(U) new0004(app(V,U))* -> .
+BSubsumption: 17[0:Inp] || ls(U) p(app(V,U))* new0004(app(V,U)) -> . by 25 
+	Given clause: 25[0:Obv:24.0] || ls(U) new0004(app(V,U))* -> .
+	Given clause: 26[0:Res:3.1,25.1] || new0004(U) ls(U)* -> .
+##26 in T2
+
+##22 in T2
+
+##ERES:successful: previous_max=26, current_max=32, resolvents:27;28;29;30;31;32;
+
+##ERES2:2 begin
+new0002 ->  ind_2(~p)
+##sometime clauses: end
+##current max clause number: 32
+Input Problem:
+33[0:Inp] || ls(U) p(app(V,U))* -> .
+ This is a monadic Horn problem without equality.
+ This is a problem that has, if any, a finite domain model.
+ There are no function symbols.
+ This is a problem that contains sort information.
+ Axiom clauses: 1 Conjecture clauses: 0
+ Inferences: IORe=1 
+ Reductions: RFMRR=2 RObv=1 RTaut=1 RFSub=1 RBSub=1 RCon=1 
+ Extras    : No Input Saturation, No Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1
+ Precedence: div > id > app > ls > p > new0001 > new0002 > new0003 > ind_1 > new0004 > ind_2 > new0005 > wind_1notp > wind_2notp > 0 > start > T
+ Ordering  : KBO
+Processed Problem:
+
+Worked Off Clauses:
+7[0:Inp] || new0005(U) -> p(U)*.
+4[0:Inp] || new0004(U) -> p(U)*.
+8[0:Inp] || new0002(U)* -> new0005(U).
+5[0:Inp] || new0003(U)* -> new0004(U).
+2[0:Inp] || new0001(U)* -> new0003(U) new0002(U).
+6[0:Inp] || new0005(U) -> new0005(app(V,U))*.
+3[0:Inp] || new0004(U) -> new0004(app(V,U))*.
+Usable Clauses:
+33[0:Inp] || ls(U) p(app(V,U))* -> .
+	Given clause: 33[0:Inp] || ls(U) p(app(V,U))* -> .
+	Given clause: 34[0:Res:7.1,33.1] || new0005(app(U,V))* ls(V) -> .
+	Given clause: 36[0:Res:6.1,34.0] || new0005(U) ls(U)* -> .
+	Given clause: 35[0:Res:4.1,33.1] || new0004(app(U,V))* ls(V) -> .
+	Given clause: 37[0:Res:3.1,35.0] || new0004(U) ls(U)* -> .
+##37 in T2
+
+##36 in T2
+Input Problem:
+38[0:Inp] || ls(U) new0004(app(V,U)) p(app(V,U))* -> .
+39[0:Inp] || ls(U) new0005(app(V,U)) p(app(V,U))* -> .
+ This is a monadic Horn problem without equality.
+ This is a problem that has, if any, a finite domain model.
+ There are no function symbols.
+ This is a problem that contains sort information.
+ Axiom clauses: 2 Conjecture clauses: 0
+ Inferences: IORe=1 
+ Reductions: RFMRR=2 RObv=1 RTaut=1 RFSub=1 RBSub=1 RCon=1 
+ Extras    : No Input Saturation, No Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1
+ Precedence: div > id > app > ls > p > new0001 > new0002 > new0003 > ind_1 > new0004 > ind_2 > new0005 > wind_1notp > wind_2notp > 0 > start > T
+ Ordering  : KBO
+Processed Problem:
+
+Worked Off Clauses:
+7[0:Inp] || new0005(U) -> p(U)*.
+4[0:Inp] || new0004(U) -> p(U)*.
+8[0:Inp] || new0002(U)* -> new0005(U).
+5[0:Inp] || new0003(U)* -> new0004(U).
+2[0:Inp] || new0001(U)* -> new0003(U) new0002(U).
+6[0:Inp] || new0005(U) -> new0005(app(V,U))*.
+3[0:Inp] || new0004(U) -> new0004(app(V,U))*.
+Usable Clauses:
+39[0:Inp] || ls(U) p(app(V,U))* new0005(app(V,U)) -> .
+38[0:Inp] || ls(U) p(app(V,U))* new0004(app(V,U)) -> .
+	Given clause: 39[0:Inp] || ls(U) p(app(V,U))* new0005(app(V,U)) -> .
+Obvious: 40[0:Res:7.1,39.1] || new0005(app(U,V))* ls(V) new0005(app(U,V))* -> . ==> 42[0:Obv:40.0] || ls(U) new0005(app(V,U))* -> .
+BSubsumption: 39[0:Inp] || ls(U) p(app(V,U))* new0005(app(V,U)) -> . by 42 
+FSubsumption: 41[0:Res:4.1,39.1] || new0004(app(U,V))* ls(V) new0005(app(U,V)) -> . by 42 0 
+	Given clause: 42[0:Obv:40.0] || ls(U) new0005(app(V,U))* -> .
+	Given clause: 43[0:Res:6.1,42.1] || new0005(U) ls(U)* -> .
+	Given clause: 38[0:Inp] || ls(U) p(app(V,U))* new0004(app(V,U)) -> .
+FSubsumption: 44[0:Res:7.1,38.1] || new0005(app(U,V)) ls(V) new0004(app(U,V))* -> . by 42 0 
+Obvious: 45[0:Res:4.1,38.1] || new0004(app(U,V))* ls(V) new0004(app(U,V))* -> . ==> 46[0:Obv:45.0] || ls(U) new0004(app(V,U))* -> .
+BSubsumption: 38[0:Inp] || ls(U) p(app(V,U))* new0004(app(V,U)) -> . by 46 
+	Given clause: 46[0:Obv:45.0] || ls(U) new0004(app(V,U))* -> .
+	Given clause: 47[0:Res:3.1,46.1] || new0004(U) ls(U)* -> .
+##47 in T2
+
+##43 in T2
+
+##ERES:successful: previous_max=47, current_max=53, resolvents:48;49;50;51;52;53;
+Input Problem:
+27[0:Inp] || new0003(U) p(U)* -> wind_1notp(U).
+28[0:Inp] || wind_1notp(U) p(app(ind_1,U))* -> wind_1notp(app(ind_1,U)).
+29[0:Inp] || new0003(U) p(U)* new0004(U) -> .
+30[0:Inp] || new0003(U) p(U)* new0005(U) -> .
+31[0:Inp] || wind_1notp(U) p(app(ind_1,U))* new0004(app(ind_1,U)) -> .
+32[0:Inp] || wind_1notp(U) p(app(ind_1,U))* new0005(app(ind_1,U)) -> .
+48[0:Inp] || new0002(U) p(U)* -> wind_2notp(U).
+49[0:Inp] || wind_2notp(U) p(app(ind_2,U))* -> wind_2notp(app(ind_2,U)).
+50[0:Inp] || new0002(U) p(U)* new0004(U) -> .
+51[0:Inp] || new0002(U) p(U)* new0005(U) -> .
+52[0:Inp] || wind_2notp(U) p(app(ind_2,U))* new0004(app(ind_2,U)) -> .
+53[0:Inp] || wind_2notp(U) p(app(ind_2,U))* new0005(app(ind_2,U)) -> .
+ This is a monadic Horn problem without equality.
+ This is a problem that has, if any, a finite domain model.
+ There are no function symbols.
+ This is a problem that contains sort information.
+ Axiom clauses: 12 Conjecture clauses: 0
+ Inferences: IORe=1 
+ Reductions: RFMRR=2 RObv=1 RTaut=1 RFSub=1 RBSub=1 RCon=1 
+ Extras    : No Input Saturation, No Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1
+ Precedence: div > id > app > ls > p > new0001 > new0002 > new0003 > ind_1 > new0004 > ind_2 > new0005 > wind_1notp > wind_2notp > 0 > start > T
+ Ordering  : KBO
+Processed Problem:
+
+Worked Off Clauses:
+3[0:Inp] || new0004(U) -> new0004(app(V,U))*.
+6[0:Inp] || new0005(U) -> new0005(app(V,U))*.
+11[0:Res:10.0,5.0] ||  -> new0005(0) new0004(0)*.
+10[0:Res:9.1,8.0] ||  -> new0003(0)* new0005(0).
+9[0:Res:1.0,2.0] ||  -> new0003(0) new0002(0)*.
+2[0:Inp] || new0001(U)* -> new0003(U) new0002(U).
+5[0:Inp] || new0003(U)* -> new0004(U).
+8[0:Inp] || new0002(U)* -> new0005(U).
+4[0:Inp] || new0004(U) -> p(U)*.
+7[0:Inp] || new0005(U) -> p(U)*.
+1[0:Inp] ||  -> new0001(0)*.
+Usable Clauses:
+48[0:Inp] || p(U)* new0002(U) -> wind_2notp(U).
+27[0:Inp] || p(U)* new0003(U) -> wind_1notp(U).
+51[0:Inp] || new0005(U) p(U)* new0002(U) -> .
+50[0:Inp] || new0004(U) p(U)* new0002(U) -> .
+30[0:Inp] || new0005(U) p(U)* new0003(U) -> .
+29[0:Inp] || new0004(U) p(U)* new0003(U) -> .
+49[0:Inp] || wind_2notp(U) p(app(ind_2,U))* -> wind_2notp(app(ind_2,U)).
+28[0:Inp] || wind_1notp(U) p(app(ind_1,U))* -> wind_1notp(app(ind_1,U)).
+53[0:Inp] || wind_2notp(U) new0005(app(ind_2,U)) p(app(ind_2,U))* -> .
+52[0:Inp] || wind_2notp(U) new0004(app(ind_2,U)) p(app(ind_2,U))* -> .
+32[0:Inp] || wind_1notp(U) new0005(app(ind_1,U)) p(app(ind_1,U))* -> .
+31[0:Inp] || wind_1notp(U) new0004(app(ind_1,U)) p(app(ind_1,U))* -> .
+	Given clause: 48[0:Inp] || p(U)* new0002(U) -> wind_2notp(U).
+FMatchingReplacementResolution: 55[0:Res:7.1,48.0] || new0005(U) new0002(U)* -> wind_2notp(U). ==> [ 8.0 ] 56[0:MRR:55.0,8.1] || new0002(U)* -> wind_2notp(U).
+BSubsumption: 48[0:Inp] || p(U)* new0002(U) -> wind_2notp(U). by 56 
+BSubsumption: 54[0:Res:4.1,48.0] || new0004(U) new0002(U)* -> wind_2notp(U). by 56 
+	Given clause: 56[0:MRR:55.0,8.1] || new0002(U)* -> wind_2notp(U).
+	Given clause: 57[0:Res:9.1,56.0] ||  -> new0003(0)* wind_2notp(0).
+	Given clause: 58[0:Res:57.0,5.0] ||  -> wind_2notp(0) new0004(0)*.
+	Given clause: 27[0:Inp] || p(U)* new0003(U) -> wind_1notp(U).
+FMatchingReplacementResolution: 59[0:Res:4.1,27.0] || new0004(U) new0003(U)* -> wind_1notp(U). ==> [ 5.0 ] 61[0:MRR:59.0,5.1] || new0003(U)* -> wind_1notp(U).
+BSubsumption: 27[0:Inp] || p(U)* new0003(U) -> wind_1notp(U). by 61 
+FSubsumption: 60[0:Res:7.1,27.0] || new0005(U) new0003(U)* -> wind_1notp(U). by 61 0 
+	Given clause: 61[0:MRR:59.0,5.1] || new0003(U)* -> wind_1notp(U).
+	Given clause: 62[0:Res:57.0,61.0] ||  -> wind_2notp(0) wind_1notp(0)*.
+	Given clause: 63[0:Res:10.0,61.0] ||  -> new0005(0)* wind_1notp(0).
+	Given clause: 51[0:Inp] || new0005(U) p(U)* new0002(U) -> .
+FMatchingReplacementResolution: 64[0:Res:4.1,51.1] || new0004(U) new0005(U) new0002(U)* -> . ==> [ 8.1 ] 66[0:MRR:64.1,8.1] || new0004(U) new0002(U)* -> .
+BSubsumption: 50[0:Inp] || new0004(U) p(U)* new0002(U) -> . by 66 
+Obvious: 65[0:Res:7.1,51.1] || new0005(U) new0005(U) new0002(U)* -> . ==> 67[0:Obv:65.0] || new0005(U) new0002(U)* -> .
+FMatchingReplacementResolution: 67[0:Obv:65.0] || new0005(U) new0002(U)* -> . ==> [ 8.0 ] 68[0:MRR:67.0,8.1] || new0002(U)* -> .
+BSubsumption: 8[0:Inp] || new0002(U)* -> new0005(U). by 68 
+BSubsumption: 56[0:MRR:55.0,8.1] || new0002(U)* -> wind_2notp(U). by 68 
+BSubsumption: 51[0:Inp] || new0005(U) p(U)* new0002(U) -> . by 68 
+BSubsumption: 66[0:MRR:64.1,8.1] || new0004(U) new0002(U)* -> . by 68 
+	Given clause: 30[0:Inp] || new0005(U) p(U)* new0003(U) -> .
+FMatchingReplacementResolution: 69[0:Res:4.1,30.1] || new0004(U) new0005(U) new0003(U)* -> . ==> [ 5.0 ] 71[0:MRR:69.0,5.1] || new0005(U) new0003(U)* -> .
+BSubsumption: 30[0:Inp] || new0005(U) p(U)* new0003(U) -> . by 71 
+Obvious: 70[0:Res:7.1,30.1] || new0005(U) new0005(U) new0003(U)* -> . ==> 72[0:Obv:70.0] || new0005(U) new0003(U)* -> .
+FSubsumption: 72[0:Obv:70.0] || new0005(U) new0003(U)* -> . by 71 0 
+	Given clause: 68[0:MRR:67.0,8.1] || new0002(U)* -> .
+BSubsumption: 9[0:Res:1.0,2.0] ||  -> new0003(0) new0002(0)*. by 73 
+BSubsumption: 10[0:Res:9.1,8.0] ||  -> new0003(0)* new0005(0). by 73 
+BSubsumption: 57[0:Res:9.1,56.0] ||  -> new0003(0)* wind_2notp(0). by 73 
+	Given clause: 73[0:Res:9.1,68.0] ||  -> new0003(0)*.
+BSubsumption: 62[0:Res:57.0,61.0] ||  -> wind_2notp(0) wind_1notp(0)*. by 74 
+BSubsumption: 63[0:Res:10.0,61.0] ||  -> new0005(0)* wind_1notp(0). by 74 
+BSubsumption: 11[0:Res:10.0,5.0] ||  -> new0005(0) new0004(0)*. by 75 
+BSubsumption: 58[0:Res:57.0,5.0] ||  -> wind_2notp(0) new0004(0)*. by 75 
+	Given clause: 74[0:Res:73.0,61.0] ||  -> wind_1notp(0)*.
+	Given clause: 75[0:Res:73.0,5.0] ||  -> new0004(0)*.
+	Given clause: 29[0:Inp] || new0004(U) p(U)* new0003(U) -> .
+Obvious: 76[0:Res:4.1,29.1] || new0004(U) new0004(U) new0003(U)* -> . ==> 78[0:Obv:76.0] || new0004(U) new0003(U)* -> .
+FMatchingReplacementResolution: 78[0:Obv:76.0] || new0004(U) new0003(U)* -> . ==> [ 5.0 ] 79[0:MRR:78.0,5.1] || new0003(U)* -> .
+BSubsumption: 5[0:Inp] || new0003(U)* -> new0004(U). by 79 
+BSubsumption: 61[0:MRR:59.0,5.1] || new0003(U)* -> wind_1notp(U). by 79 
+BSubsumption: 29[0:Inp] || new0004(U) p(U)* new0003(U) -> . by 79 
+BSubsumption: 71[0:MRR:69.0,5.1] || new0005(U) new0003(U)* -> . by 79 
+FSubsumption: 77[0:Res:7.1,29.1] || new0005(U) new0004(U) new0003(U)* -> . by 79 0 
+	Given clause: 79[0:MRR:78.0,5.1] || new0003(U)* -> .
+
+
+==== CTL-RP version 00.21 (alpha)
+==== Lan Zhang, Ullrich Hustadt and Clare Dixon
+==== University of Liverpool
+==================== Result: Valid 
+==================== Time consumed by input:     0:00:00.0043    
+==================== Time consumed by deduction: 0:00:00.0089    
+==================== Derived clauses in the main loop: 27 
+==================== Subsumed clauses in the main loop: 29 
+==================== Successful ERES applications: 2 
+====================              derived clauses: 20 
+====================             subsumed clauses: 8 
+==================== Failed ERES applications: 0 
+====================              derived clauses: 0 
+====================             subsumed clauses: 0 
+==================== Total derived clauses: 47 
+==================== Total subsumed clauses: 37 
+
+
+Here is a proof from CTL-RP:
+1[0:Inp] ||  -> new0001(0)*.
+2[0:Inp] || new0001(U)* -> new0003(U) new0002(U).
+4[0:Inp] || new0004(U) -> p(U)*.
+5[0:Inp] || new0003(U)* -> new0004(U).
+7[0:Inp] || new0005(U) -> p(U)*.
+8[0:Inp] || new0002(U)* -> new0005(U).
+9[0:Res:1.0,2.0] ||  -> new0003(0) new0002(0)*.
+29[0:Inp] || new0004(U) p(U)* new0003(U) -> .
+51[0:Inp] || new0005(U) p(U)* new0002(U) -> .
+65[0:Res:7.1,51.1] || new0005(U) new0005(U) new0002(U)* -> .
+67[0:Obv:65.0] || new0005(U) new0002(U)* -> .
+68[0:MRR:67.0,8.1] || new0002(U)* -> .
+73[0:Res:9.1,68.0] ||  -> new0003(0)*.
+76[0:Res:4.1,29.1] || new0004(U) new0004(U) new0003(U)* -> .
+78[0:Obv:76.0] || new0004(U) new0003(U)* -> .
+79[0:MRR:78.0,5.1] || new0003(U)* -> .
+80[0:Res:73.0,79.0] ||  -> .
