@@ -4,20 +4,20 @@ import itertools
 import csv
 
 
-def get_proofs(num_of_propositions=2, include_empty_clause=False):
+def write_list_of_clause_sets_to_file(num_of_propositions=2, include_empty_clause=False):
     """
-   the csv file consisting of all combinations of different clauses
+    the csv file consisting of all combinations of different clauses
     eg. 0 on the first column means the first clause in clauses_for_x_propositions.csv is not selected.
     eg. 1 on the second column means the first clause in clauses_for_x_propositions.csv is selected.
     """
     if include_empty_clause:
         num_of_clauses = 3 ** num_of_propositions;
-        fname = 'data/proofs_for_' + \
+        fname = 'data/list_of_clause_sets_containing_' + \
                 str(num_of_propositions) + '_propositoins.csv'
     else:
         num_of_clauses = 3 ** num_of_propositions - 1;
-        fname = 'data/proofs_not_include_empty_for_' + \
-                str(num_of_propositions) + '_propositoins.csv'
+        fname = 'data/list_of_clause_sets_containing_' + \
+                str(num_of_propositions) + '_propositoins_without_the_empty_clause.csv'
 
     proofs = itertools.product(range(0, 2), repeat=num_of_clauses)
 
@@ -26,36 +26,38 @@ def get_proofs(num_of_propositions=2, include_empty_clause=False):
         csvout.writerows(proofs)
 
 
-# with line numbers in the file. In the new version, the line numbers are removed
-def get_proofs_old(num_of_propositions=2, include_empty_clause=False):
+def get_head():
     """
-    create the csv file consisting of all combinations of different clauses
+    :return: the head of ctl-rp input file
     """
-    if include_empty_clause:
-        num_of_clauses = 3 ** num_of_propositions;
-        fname = 'data/proofs_clause_for_' + \
-                str(num_of_propositions) + '_propositoins.csv'
-    else:
-        num_of_clauses = 3 ** num_of_propositions - 1;
-        fname = 'data/proofs_not_include_empty_clause_for_' + \
-                str(num_of_propositions) + '_propositoins.csv'
-    # print(length)
-    rows = list()
-    y = 0
-    for x in itertools.product(range(0, 2), repeat=num_of_clauses):
-        # print(y, x)
-        one_row = list(x);
-        one_row.insert(0, y);
-        rows.append(one_row);
-        y += 1
+    head = """
+begin_problem(test2).
+list_of_descriptions.
+name({*01*}).
+author({*Lan Zhang*}).
+status(unknown).
+description({*Test a  CNF propositional logic clauses set*}).
+end_of_list.
 
-    # print(rows)
-    with open(fname, 'wt') as fout:
-        csvout = csv.writer(fout)
-        csvout.writerows(rows)
+list_of_ctlformulae(axioms).
+and(
+    """
+    return head
+
+
+def get_tail():
+    """
+    :return: the head of ctl-rp input file
+    """
+    tail = """
+).
+end_of_list.
+end_problem.
+    """
+    return tail
 
 
 # main
 if __name__ == '__main__':
-    # get_proofs(2, False);
-    get_proofs(2, True);
+    write_list_of_clause_sets_to_file(2, True);
+    write_list_of_clause_sets_to_file(2, False);

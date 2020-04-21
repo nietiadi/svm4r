@@ -24,7 +24,6 @@ def proving(num_of_propositions=2, with_empty_clause=False):
     for row in csvin:
       #print(', '.join(row))
       print(row)
-      HERE
 
 
 
@@ -43,6 +42,7 @@ def proving(num_of_propositions=2, with_empty_clause=False):
     csvout = csv.writer(fout)
     csvout.writerows(rows)
   """
+
 
 #main
 proving(2, False);
