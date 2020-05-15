@@ -21,43 +21,15 @@ def write_list_of_clause_sets_to_file(num_of_propositions=2, include_empty_claus
 
     proofs = itertools.product(range(0, 2), repeat=num_of_clauses)
 
+    next(proofs) # delete the first line, which are all zeors, for instance, 0,0,0,0
+
     with open(fname, 'wt') as fout:
         csvout = csv.writer(fout)
         csvout.writerows(proofs)
 
 
-def get_head():
-    """
-    :return: the head of ctl-rp input file
-    """
-    head = """
-begin_problem(test2).
-list_of_descriptions.
-name({*01*}).
-author({*Lan Zhang*}).
-status(unknown).
-description({*Test a  CNF propositional logic clauses set*}).
-end_of_list.
-
-list_of_ctlformulae(axioms).
-and(
-    """
-    return head
-
-
-def get_tail():
-    """
-    :return: the head of ctl-rp input file
-    """
-    tail = """
-).
-end_of_list.
-end_problem.
-    """
-    return tail
-
 
 # main
 if __name__ == '__main__':
-    write_list_of_clause_sets_to_file(2, True);
+    #write_list_of_clause_sets_to_file(2, True);
     write_list_of_clause_sets_to_file(2, False);

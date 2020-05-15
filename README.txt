@@ -20,7 +20,7 @@
 
 
 current_job:
-load_all_clauses()
+unit test create_ctlrp_input_body()
 From one vector (0010101) create a PLSatProblem
 PLSatProblem.py
 @ According to the rows of the csv file, create input files for ctl-rp;

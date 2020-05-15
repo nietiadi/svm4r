@@ -62,14 +62,14 @@ def add_another_variable(clauses: list) -> list:
 
 def write_clauses(clauses: list, num):
     import csv
-    with open('data/clauses_for_' + str(num) + '_propositoins.csv', 'wt') as fout:
+    with open('data/clauses_for_' + str(num) + '_propositions.csv', 'wt') as fout:
         csvout = csv.writer(fout)
         csvout.writerows(clauses)
 
 
 def write_clauses_tofile(clauses: itertools.product, num):
     import csv
-    with open('data/clauses_for_' + str(num) + '_propositoins.csv', 'wt') as fout:
+    with open('data/clauses_for_' + str(num) + '_propositions.csv', 'wt') as fout:
         csvout = csv.writer(fout)
         csvout.writerows(clauses)
 
