@@ -20,12 +20,6 @@
 
 
 current_job:
-unit test create_ctlrp_input_body()
-From one vector (0010101) create a PLSatProblem
-PLSatProblem.py
-@ According to the rows of the csv file, create input files for ctl-rp;
-head    done.
-tail
-body
-
+run ctlrp
+test with ttprover
 

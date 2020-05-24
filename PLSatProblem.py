@@ -28,6 +28,7 @@ class PLSatProblem:
         """
         self.select_clauses = selected_clauses
         self.problem = self.create_ctlrp_input()
+        self.sat = None
 
     def get_ctlrp_input_head(self):
         """
@@ -57,6 +58,22 @@ end_problem.
         """
         return tail
 
+    def get_ctlrp_input_satisfiable(self):
+        head_n_tail = """
+begin_problem(test2).
+list_of_descriptions.
+name({*01*}).
+author({*Lan Zhang*}).
+status(unknown).
+description({*Test a  CNF propositional logic clauses set*}).
+end_of_list.
+list_of_ctlformulae(axioms).
+SINGLE_CLAUSE.
+end_of_list.
+end_problem.
+        """
+        return head_n_tail
+
 
     @classmethod
     def load_all_clauses(cls):
@@ -82,13 +99,13 @@ end_problem.
                 zero += 1
                 continue
             elif x == '1':
-                pl_clause += 'p'+str(i)+', '
+                pl_clause += 'p'+str(i)+','
             elif x == '2':
-                pl_clause += 'not(p'+str(i)+'), '
+                pl_clause += 'not(p'+str(i)+'),'
             else:
                 pass
 
-        pl_clause = pl_clause.strip(', ')
+        pl_clause = pl_clause.strip(',')
         pl_clause += ')'
 
         if zero == len(clause):# all are zeros
@@ -99,8 +116,16 @@ end_problem.
         else:
             return pl_clause
 
-
     def create_ctlrp_input_body(self):
+        body = ''
+        for i, s in enumerate(self.select_clauses.split(',')):
+            #print('--'+str(i)+','+s)
+            if int(s) != 0:
+                body += PLSatProblem.all_pl_clauses[i]+','
+        body = body.strip(',') # remove the last comma and space
+        return body
+
+    def create_ctlrp_input_body_2(self):
         num_zeros = self.select_clauses.count('0')
         len = 3**PLSatProblem.num_propositions-1 # no empty clause
 
@@ -117,9 +142,16 @@ end_problem.
         return body
 
     def create_ctlrp_input(self):
-        problem = self.get_ctlrp_input_head()
-        problem += self.create_ctlrp_input_body()
-        problem += self.get_ctlrp_input_tail()
+        num_zeros = self.select_clauses.count('0')
+        len = 3 ** PLSatProblem.num_propositions - 1  # no empty clause
+        if len-num_zeros == 1:# only one clause is selected, \
+            # then remove and().
+            problem = self.get_ctlrp_input_satisfiable()
+            problem = problem.replace('SINGLE_CLAUSE', self.create_ctlrp_input_body())
+        else:
+            problem = self.get_ctlrp_input_head()
+            problem += self.create_ctlrp_input_body()
+            problem += self.get_ctlrp_input_tail()
         return problem
 
     def check_satisfiability(self):
