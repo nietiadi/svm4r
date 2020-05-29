@@ -20,6 +20,8 @@
 
 
 current_job:
+how to call ctlrp
+test_1_unsat
 run ctlrp
 test with ttprover
 
