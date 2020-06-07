@@ -2,6 +2,7 @@
 Each instance of PLSatProblem represents a propositional logic satisfiability problem.
 """
 import csv
+import os
 
 class PLSatProblem:
 
@@ -162,7 +163,24 @@ end_problem.
     def get_file_of_all_clauses(cls):
         return 'data/clauses_for_'+str(cls.num_propositions)+'_propositions.csv'
 
+    def run_ctlrp(self):
+        with open('ztest', 'w') as fout:
+            fout.write(self.problem)
+        with os.popen('./ctlrp21_sourceforge/ctlrp21_x86_64 ztest') as pipe:
+            result = pipe.read()
+        try:
+            index = result.index('Unsatisfiable')
+            if index>=0:
+                self.sat = 'unsat'
+        except ValueError:
+            pass
 
+        try:
+            index = result.index('Satisfiable')
+            if index>=0:
+                self.sat = 'sat'
+        except ValueError:
+            pass
 
 
 #main

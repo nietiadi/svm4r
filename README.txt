@@ -20,8 +20,6 @@
 
 
 current_job:
-how to call ctlrp
-test_1_unsat
-run ctlrp
+test all the cases with ctlrp
 test with ttprover
 
