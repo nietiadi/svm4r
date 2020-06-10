@@ -24,3 +24,4 @@ x = np.arange(-10, 10, 0.01)
 y = 2 ** x
 plt.plot(x,y)
 plt.show()
+#plt.savefig()

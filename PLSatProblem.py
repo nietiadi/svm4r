@@ -183,15 +183,14 @@ end_problem.
             pass
 
 
-#main
+# for testing
+    """
 if __name__ == '__main__':
     PLSatProblem.init_class_properties(2)
 
-    """
     problem = PLSatProblem('1,0,0,0,0,0,0,0,0,1')
     for i, (c, pl) in enumerate(zip(problem.all_clauses, problem.all_pl_clauses), start=1):
         print(i, c, pl)
-    """
 
     problem = PLSatProblem('1,0,0,0,0,0,0,1')
     print(problem.problem)
@@ -206,3 +205,11 @@ if __name__ == '__main__':
 
     problem = PLSatProblem('1,1,1,1,1,1,1,1')
     print(problem.problem)
+    """
+
+if __name__ == '__main__':
+    # Generate data
+    no_prop = 2
+    PLSatProblem.init_class_properties(no_prop)
+    with open('./data/2_prop_simple.cvs', 'wt') as fout:
+        with open(./data/)
