@@ -14,12 +14,9 @@
 1.proofs.py, Obsolete
 3.generate_all_data.sh, Done
 
-2.proving.py, HERE
-
-
-
 
 current_job:
+clearn workspace
 test all the cases with ctlrp
 test with ttprover
 
