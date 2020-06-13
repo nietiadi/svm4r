@@ -20,3 +20,7 @@ clearn workspace
 test all the cases with ctlrp
 test with ttprover
 
+
+
+data:
+2_prop_simple.cvs: row number + sat

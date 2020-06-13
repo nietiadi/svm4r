@@ -211,5 +211,15 @@ if __name__ == '__main__':
     # Generate data
     no_prop = 2
     PLSatProblem.init_class_properties(no_prop)
+    row = 0
     with open('./data/2_prop_simple.cvs', 'wt') as fout:
-        with open(./data/)
+        with open('./data/list_of_clause_sets_containing_2_' +
+                  'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+            vector = fin.readline()
+            problem = PLSatProblem(vector)
+            problem.run_ctlrp()
+            row += 1
+            fout.write(str(row)+','+problem.sat)
+
+
+
