@@ -211,15 +211,31 @@ if __name__ == '__main__':
     # Generate data
     no_prop = 2
     PLSatProblem.init_class_properties(no_prop)
+
+    version = 2
+
+    # write the simple version of data for ML
+    # row number + satisfiability
     row = 0
-    with open('./data/2_prop_simple.cvs', 'wt') as fout:
+    with open('./data/2_prop_version1.cvs', 'wt') as fout:
         with open('./data/list_of_clause_sets_containing_2_' +
                   'propositoins_without_the_empty_clause.csv', 'rt') as fin:
-            vector = fin.readline()
-            problem = PLSatProblem(vector)
-            problem.run_ctlrp()
-            row += 1
-            fout.write(str(row)+','+problem.sat)
+            for vector in fin:
+                #vector = fin.readline()
+                problem = PLSatProblem(vector)
+                problem.run_ctlrp()
+                row += 1
+                fout.write(str(row)+','+problem.sat+'\n')
 
+    # write another  version of data for ML
+    # the vector of selected clauses + satisfiability
+    with open('./data/2_prop_version2.cvs', 'wt') as fout:
+        with open('./data/list_of_clause_sets_containing_2_' +
+                  'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+            for vector in fin:
+                #vector = fin.readline()
+                problem = PLSatProblem(vector)
+                problem.run_ctlrp()
+                fout.write(vector.strip()+','+problem.sat+'\n')
 
 
