@@ -25,3 +25,4 @@ y = 2 ** x
 plt.plot(x,y)
 plt.show()
 #plt.savefig()
+plt.close()

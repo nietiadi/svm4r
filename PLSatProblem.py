@@ -183,6 +183,35 @@ end_problem.
             pass
 
 
+    def run_ttprover(self):
+        with open('ztest_ttprover', 'w') as fout:
+            fout.write(self.problem)
+
+        # not right, no need os to help
+        with os.popen('python3 ttprover/truth_table_prover.py ztest_ttprover') as pipe:
+            result = pipe.read()
+        try:
+            index = result.index('unsatisfiable')
+            if index>=0:
+                self.sat = 'unsat'
+        except ValueError:
+            pass
+
+        try:
+            index = result.index('satisfiable')
+            if index>=0:
+                self.sat = 'sat'
+        except ValueError:
+            pass
+
+        try:
+            index = result.index('valid')
+            if index>=0:
+                self.sat = 'sat'
+        except ValueError:
+            pass
+
+
 # for testing
     """
 if __name__ == '__main__':
@@ -212,7 +241,7 @@ if __name__ == '__main__':
     no_prop = 2
     PLSatProblem.init_class_properties(no_prop)
 
-    version = 2
+    version = 't1'
 
     # write the simple version of data for ML
     # row number + satisfiability
@@ -254,3 +283,17 @@ if __name__ == '__main__':
                     problem = PLSatProblem(vector)
                     problem.run_ctlrp()
                     fout.write(vector.strip()+','+problem.sat+'\n')
+
+    # version1 from ttprover
+    if version == 't1':
+        row = 0
+        with open('./data/'+str(no_prop)+'_prop_version1_ttprover.cvs', 'wt') as fout:
+            with open('./data/list_of_clause_sets_containing_2_' +
+                      'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+                for vector in fin:
+                    #vector = fin.readline()
+                    problem = PLSatProblem(vector)
+                    problem.run_ttprover()
+                    row += 1
+                    fout.write(str(row)+','+problem.sat+'\n')
+

@@ -16,11 +16,13 @@
 
 
 current_job:
-clearn workspace
-test all the cases with ctlrp
+create ttprover's input
+run_ttprover()
+use ttprover to verify the result
+for ttprover, if result is satisfiable or valid, then write satisfiable;
+if the result is unsatisfiable, then write unsatisfiable
 test with ttprover
-
-
+2_prop_version3.cvs
+fill the section data
 
 data:
-2_prop_simple.cvs: row number + sat
