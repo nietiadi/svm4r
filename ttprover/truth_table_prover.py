@@ -71,8 +71,10 @@ def cal_not(node):
         node.tag = 'true'
 
 def proof(node):
+    #print(print_formula(node))
     if node.tag=='true' or node.tag=='false':
-        reture
+        #reture
+        return
     for child in node:
         if child.tag in OPERATORS:
             proof(child)
@@ -85,43 +87,82 @@ def proof(node):
     elif node.tag == 'not':
         cal_not(node)
 
+def run(xml_string):
+    """
+    for PLSatProblemXML to use
+
+    :param xml_string: e.g. <and><p0/><not><p0/></not></and>
+    :return: e.g. unsatisfiable
+    """
+    root = et.fromstring(xml_string)
+
+    #print("Input: " + print_formula(root))
+    pset = set_prop(root)
+    #print("The set of all propositions is " + str(pset))
+    plist = list(pset)
+
+    count = 0
+    final_result = set()
+    for item in product(('true', 'false'), repeat=len(pset)):
+        root = et.fromstring(xml_string)
+        print(str(count) + '. ' + assign_props(root, plist, item))
+        count += 1
+        print(print_formula(root))
+        proof(root)
+        print(print_formula(root))
+        print('result: ' + root.tag + '\n')
+        final_result = final_result | {root.tag}
+
+    if len(final_result) == 2:
+        #print('========\nfinal result: satisfiable\n\n')
+        return 'sat'
+    elif 'true' not in final_result:
+        #print('========\nfinal result: unsatisfiable\n\n')
+        return 'unsat'
+    else:
+        #print('========\nfinal result: valid\n\n')
+        return 'sat'
+
+
 #### Main
-if len(sys.argv)!=2:
-  print('Wrong arguments')
-  sys.exit(0)
-elif not os.path.isfile(sys.argv[1]):
-  print('File does not exist.')
-  sys.exit(0)
-else:
-  input_file = sys.argv[1]
-  
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print('Wrong arguments')
+        sys.exit(0)
+    elif not os.path.isfile(sys.argv[1]):
+        print('File does not exist.')
+        sys.exit(0)
+    else:
+        input_file = sys.argv[1]
 
-tree = et.ElementTree(file=input_file)
-root = tree.getroot()
-
-print("Input: "+print_formula(root))
-pset = set_prop(root)
-print("The set of all propositions is "+str(pset))
-plist = list(pset)
-
-count = 0
-final_result = set()
-for item in product(('true', 'false'), repeat=len(pset)):
     tree = et.ElementTree(file=input_file)
     root = tree.getroot()
-    print(str(count)+'. '+assign_props(tree, plist, item))
-    count+=1
-    print(print_formula(root))
-    proof(root)
-    print(print_formula(root)) 
-    print('result: '+root.tag+'\n')
-    final_result = final_result | {root.tag}
 
-if len(final_result)==2:
-    print('========\nfinal result: satisfiable\n\n')
-elif 'true' not in final_result:
-    print('========\nfinal result: unsatisfiable\n\n')
-else:
-    print('========\nfinal result: valid\n\n')
+    print("Input: " + print_formula(root))
+    pset = set_prop(root)
+    print("The set of all propositions is " + str(pset))
+    plist = list(pset)
+
+    count = 0
+    final_result = set()
+    for item in product(('true', 'false'), repeat=len(pset)):
+        tree = et.ElementTree(file=input_file)
+        root = tree.getroot()
+        print(str(count) + '. ' + assign_props(tree, plist, item))
+        count += 1
+        print(print_formula(root))
+        proof(root)
+        print(print_formula(root))
+        print('result: ' + root.tag + '\n')
+        final_result = final_result | {root.tag}
+
+    if len(final_result) == 2:
+        print('========\nfinal result: satisfiable\n\n')
+    elif 'true' not in final_result:
+        print('========\nfinal result: unsatisfiable\n\n')
+    else:
+        print('========\nfinal result: valid\n\n')
+
+
 
 

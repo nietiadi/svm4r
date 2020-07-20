@@ -3,8 +3,10 @@ Each instance of PLSatProblem represents a propositional logic satisfiability pr
 """
 import csv
 import os
+import xml.etree.ElementTree as ET
+import ttprover.ttprover as ttp
 
-class PLSatProblem:
+class PLSatProblemXML:
 
     num_propositions = 0
     all_clauses = None
@@ -28,52 +30,8 @@ class PLSatProblem:
         :param selected_clauses: a set of clauses
         """
         self.select_clauses = selected_clauses
-        self.problem = self.create_ctlrp_input()
+        self.problem = self.create_xml_input()
         self.sat = None
-
-    def get_ctlrp_input_head(self):
-        """
-        :return: the head of ctl-rp input file
-        """
-        head = """
-begin_problem(test2).
-list_of_descriptions.
-name({*01*}).
-author({*Lan Zhang*}).
-status(unknown).
-description({*Test a  CNF propositional logic clauses set*}).
-end_of_list.
-list_of_ctlformulae(axioms).
-and(
-"""
-        return head
-
-    def get_ctlrp_input_tail(self):
-        """
-        :return: the head of ctl-rp input file
-        """
-        tail = """
-).
-end_of_list.
-end_problem.
-        """
-        return tail
-
-    def get_ctlrp_input_satisfiable(self):
-        head_n_tail = """
-begin_problem(test2).
-list_of_descriptions.
-name({*01*}).
-author({*Lan Zhang*}).
-status(unknown).
-description({*Test a  CNF propositional logic clauses set*}).
-end_of_list.
-list_of_ctlformulae(axioms).
-SINGLE_CLAUSE.
-end_of_list.
-end_problem.
-        """
-        return head_n_tail
 
 
     @classmethod
@@ -87,105 +45,77 @@ end_problem.
 
     @classmethod
     def load_all_pl_clauses(cls): # Can handld the empty clause
-        clauses = [PLSatProblem.translate_matrix_into_clauses(x) \
+        clauses = [PLSatProblemXML.translate_matrix_into_clauses(x) \
                    for x in cls.all_clauses]
         return clauses
 
     @classmethod
     def translate_matrix_into_clauses(cls, clause):
         """
-        :param clause: e.g. (1,2)
-        :return: or(p0,not(p2))
+        :param clause: e.g. ['1','2']
+        :return: <or><p0/><not><p1/></not></or>
         """
         zero = 0
-        pl_clause = 'or('
+        #create root <or></or>
+        root = ET.fromstring('<or></or>')
+        #print(root.tag)
+        #print(root.attrib)
+
         for i, x in enumerate(clause):
             if x == '0':
                 zero += 1
                 continue
             elif x == '1':
-                pl_clause += 'p'+str(i)+','
+                ET.SubElement(root, 'p'+str(i))
             elif x == '2':
-                pl_clause += 'not(p'+str(i)+'),'
+                neg = ET.SubElement(root, 'not')
+                ET.SubElement(neg, 'p'+str(i))
             else:
                 pass
-
-        pl_clause = pl_clause.strip(',')
-        pl_clause += ')'
 
         if zero == len(clause):# all are zeros
             return 'F' #The empty clause
         elif len(clause)-zero == 1:# single proposition
-            pl_clause = pl_clause.replace('or(', '')# remove 'or(' and ')'
-            return pl_clause[0:len(pl_clause)-1]
+            #return '<or></or>'
+            #return ET.fromstring(root[0].tag).tostring()
+            #return ET.tostring(root[0], encoding='unicode')
+            return root[0]
         else:
-            return pl_clause
+            #return '<or></or>'
+            #return ET.tostring(root, encoding='unicode')
+            return root
 
-    def create_ctlrp_input_body(self):
-        body = ''
+    def create_xml_input_body(self):
+        root_and = ET.fromstring('<and></and>')
         for i, s in enumerate(self.select_clauses.split(',')):
-            #print('--'+str(i)+','+s)
             if int(s) != 0:
-                body += PLSatProblem.all_pl_clauses[i]+','
-        body = body.strip(',') # remove the last comma and space
-        return body
+                root_and.append(PLSatProblemXML.all_pl_clauses[i])
+        return root_and
 
-    def create_ctlrp_input_body_2(self):
+    def create_xml_input(self):
         num_zeros = self.select_clauses.count('0')
-        len = 3**PLSatProblem.num_propositions-1 # no empty clause
-
-        body = ''
-        for i, s in enumerate(self.select_clauses.split(',')):
-            #print('--'+str(i)+','+s)
-            if int(s) != 0:
-                body += PLSatProblem.all_pl_clauses[i]+', '
-        body = body.strip(', ') # remove the last comma and space
-
-        if len-num_zeros == 1:# only one clause is selected, then double it because it is satisfiable anyway.
-            body += ', '+body
-
-        return body
-
-    def create_ctlrp_input(self):
-        num_zeros = self.select_clauses.count('0')
-        len = 3 ** PLSatProblem.num_propositions - 1  # no empty clause
+        len = 3 ** PLSatProblemXML.num_propositions - 1  # no empty clause
         if len-num_zeros == 1:# only one clause is selected, \
-            # then remove and().
-            problem = self.get_ctlrp_input_satisfiable()
-            problem = problem.replace('SINGLE_CLAUSE', self.create_ctlrp_input_body())
+            problem = self.create_xml_input_body()
+            problem = problem[0] # remove the root of <and>
         else:
-            problem = self.get_ctlrp_input_head()
-            problem += self.create_ctlrp_input_body()
-            problem += self.get_ctlrp_input_tail()
+            # add <and> as a root
+            problem = self.create_xml_input_body()
         return problem
 
     def check_satisfiability(self):
-        self.sat = 'unsat'
+        self.sat = 'unsatisfiable'
         pass
 
     @classmethod
     def get_file_of_all_clauses(cls):
         return 'data/clauses_for_'+str(cls.num_propositions)+'_propositions.csv'
 
-    def run_ctlrp(self):
-        with open('ztest', 'w') as fout:
-            fout.write(self.problem)
-        with os.popen('./ctlrp21_sourceforge/ctlrp21_x86_64 ztest') as pipe:
-            result = pipe.read()
-        try:
-            index = result.index('Unsatisfiable')
-            if index>=0:
-                self.sat = 'unsat'
-        except ValueError:
-            pass
 
-        try:
-            index = result.index('Satisfiable')
-            if index>=0:
-                self.sat = 'sat'
-        except ValueError:
-            pass
-
+    def run_ttprover(self):
+        problem_str = ET.tostring(self.problem, encoding='unicode')
+        prover = ttp.TruthTableProver(input_string=problem_str)
+        self.sat = prover.run(test_satisfiability=True)
 
 
 # for testing
@@ -213,23 +143,27 @@ if __name__ == '__main__':
     """
 
 if __name__ == '__main__':
-    # Generate data
     no_prop = 2
-    PLSatProblem.init_class_properties(no_prop)
+    PLSatProblemXML.init_class_properties(no_prop)
+    #print(PLSatProblemXML.translate_matrix_into_clauses(['1','2']))
+    #print(PLSatProblemXML.translate_matrix_into_clauses(['0','2']))
+    #print(PLSatProblemXML.translate_matrix_into_clauses(['1','0']))
+    #print(PLSatProblemXML.translate_matrix_into_clauses(['0','0']))
+    #problem = PLSatProblemXML('1,0,0,0,0,0,0,1')
 
-    version = '2'
+
+    version = 1
 
     # write the simple version of data for ML
     # row number + satisfiability
     if version == 1:
         row = 0
-        with open('./data/'+str(no_prop)+'_prop_version1.cvs', 'wt') as fout:
+        with open('./data/'+str(no_prop)+'_prop_version1_xml.cvs', 'wt') as fout:
             with open('./data/list_of_clause_sets_containing_2_' +
                   'propositoins_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
-                    #vector = fin.readline()
-                    problem = PLSatProblem(vector)
-                    problem.run_ctlrp()
+                    problem = PLSatProblemXML(vector)
+                    problem.run_ttprover()
                     row += 1
                     fout.write(str(row)+','+problem.sat+'\n')
 
@@ -260,4 +194,40 @@ if __name__ == '__main__':
                     problem.run_ctlrp()
                     fout.write(vector.strip()+','+problem.sat+'\n')
 
+    # version1 from ttprover
+    if version == 't1':
+        row = 0
+        with open('./data/'+str(no_prop)+'_prop_version1_ttprover.cvs', 'wt') as fout:
+            with open('./data/list_of_clause_sets_containing_2_' +
+                      'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+                for vector in fin:
+                    #vector = fin.readline()
+                    problem = PLSatProblem(vector)
+                    problem.run_ttprover()
+                    row += 1
+                    fout.write(str(row)+','+problem.sat+'\n')
 
+    def translate_matrix_into_clauses(cls, clause):
+        zero = 0
+        pl_clause = 'or('
+        for i, x in enumerate(clause):
+            if x == '0':
+                zero += 1
+                continue
+            elif x == '1':
+                pl_clause += 'p'+str(i)+','
+            elif x == '2':
+                pl_clause += 'not(p'+str(i)+'),'
+            else:
+                pass
+
+        pl_clause = pl_clause.strip(',')
+        pl_clause += ')'
+
+        if zero == len(clause):# all are zeros
+            return 'F' #The empty clause
+        elif len(clause)-zero == 1:# single proposition
+            pl_clause = pl_clause.replace('or(', '')# remove 'or(' and ')'
+            return pl_clause[0:len(pl_clause)-1]
+        else:
+            return pl_clause

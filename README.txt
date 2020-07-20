@@ -16,13 +16,9 @@
 
 
 current_job:
-create ttprover's input
-run_ttprover()
-use ttprover to verify the result
-for ttprover, if result is satisfiable or valid, then write satisfiable;
-if the result is unsatisfiable, then write unsatisfiable
-test with ttprover
-2_prop_version3.cvs
-fill the section data
+2_prop_version2_xml.cvs
+2_prop_version3.cvs and 2_prop_version3_xml.cvs
+fill the section of data
+machine learning, svm
 
 data:
