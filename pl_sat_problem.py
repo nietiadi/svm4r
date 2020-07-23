@@ -225,7 +225,7 @@ if __name__ == '__main__':
         row = 0
         with open('./data/'+str(no_prop)+'_prop_version1.cvs', 'wt') as fout:
             with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
                     #vector = fin.readline()
                     problem = PLSatProblem(vector)
@@ -238,7 +238,7 @@ if __name__ == '__main__':
     if version == 2:
         with open('./data/'+str(no_prop)+'_prop_version2.cvs', 'wt') as fout:
             with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
                     #vector = fin.readline()
                     problem = PLSatProblem(vector)
@@ -253,7 +253,7 @@ if __name__ == '__main__':
     if version == 3:
         with open('./data/'+str(no_prop)+'_prop_version3.cvs', 'wt') as fout:
             with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
                     #vector = fin.readline()
                     problem = PLSatProblem(vector)

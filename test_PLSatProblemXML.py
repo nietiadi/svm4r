@@ -1,5 +1,5 @@
 import unittest
-import PLSatProblemXML
+import pl_sat_problem_xml
 import ttprover.truth_table_prover as pr
 
 

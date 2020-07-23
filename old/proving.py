@@ -13,10 +13,10 @@ def proving(num_of_propositions=2, with_empty_clause=False):
   """
   if with_empty_clause:
     fname = 'data/proofs_with_empty_clause_for_'+\
-    str(num_of_propositions)+'_propositoins.csv'
+    str(num_of_propositions)+'_propositions.csv'
   else:
     fname = 'data/proofs_without_empty_clause_for_'+\
-    str(num_of_propositions)+'_propositoins.csv'
+    str(num_of_propositions)+'_propositions.csv'
   
   fname = 'test.dat'
   with open(fname) as csvfile:

@@ -1,5 +1,5 @@
 import unittest
-from PLSatProblem import PLSatProblem
+from pl_sat_problem import PLSatProblem
 
 class TestPLSatProblemLinux(unittest.TestCase):
     def setUp(self):

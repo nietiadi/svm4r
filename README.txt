@@ -11,13 +11,15 @@
 ==== List of accomplishment
 0.clauses.py, Done
 0.test_clauses.py, Done
-1.proofs.py, Obsolete
+1.proofs.py, Done
 3.generate_all_data.sh, Done
 
 
 current_job:
-2_prop_version2_xml.cvs
+correct namings
 2_prop_version3.cvs and 2_prop_version3_xml.cvs
+2 in 2_prop_versionX.cvs needs to be changed
+refine all the codes
 fill the section of data
 machine learning, svm
 

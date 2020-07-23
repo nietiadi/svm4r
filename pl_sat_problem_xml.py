@@ -145,14 +145,8 @@ if __name__ == '__main__':
 if __name__ == '__main__':
     no_prop = 2
     PLSatProblemXML.init_class_properties(no_prop)
-    #print(PLSatProblemXML.translate_matrix_into_clauses(['1','2']))
-    #print(PLSatProblemXML.translate_matrix_into_clauses(['0','2']))
-    #print(PLSatProblemXML.translate_matrix_into_clauses(['1','0']))
-    #print(PLSatProblemXML.translate_matrix_into_clauses(['0','0']))
-    #problem = PLSatProblemXML('1,0,0,0,0,0,0,1')
 
-
-    version = 1
+    version = 2
 
     # write the simple version of data for ML
     # row number + satisfiability
@@ -160,7 +154,7 @@ if __name__ == '__main__':
         row = 0
         with open('./data/'+str(no_prop)+'_prop_version1_xml.cvs', 'wt') as fout:
             with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
                     problem = PLSatProblemXML(vector)
                     problem.run_ttprover()
@@ -170,13 +164,12 @@ if __name__ == '__main__':
     # write another  version of data for ML
     # the vector of selected clauses + satisfiability
     if version == 2:
-        with open('./data/'+str(no_prop)+'_prop_version2.cvs', 'wt') as fout:
+        with open('./data/'+str(no_prop)+'_prop_version2_xml.cvs', 'wt') as fout:
             with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
-                    #vector = fin.readline()
-                    problem = PLSatProblem(vector)
-                    problem.run_ctlrp()
+                    problem = PLSatProblemXML(vector)
+                    problem.run_ttprover()
                     fout.write(vector.strip()+','+problem.sat+'\n')
 
     # write the 3rd version of data for ML
@@ -187,47 +180,10 @@ if __name__ == '__main__':
     if version == 3:
         with open('./data/'+str(no_prop)+'_prop_version3.cvs', 'wt') as fout:
             with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositoins_without_the_empty_clause.csv', 'rt') as fin:
+                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
                     #vector = fin.readline()
                     problem = PLSatProblem(vector)
                     problem.run_ctlrp()
                     fout.write(vector.strip()+','+problem.sat+'\n')
 
-    # version1 from ttprover
-    if version == 't1':
-        row = 0
-        with open('./data/'+str(no_prop)+'_prop_version1_ttprover.cvs', 'wt') as fout:
-            with open('./data/list_of_clause_sets_containing_2_' +
-                      'propositoins_without_the_empty_clause.csv', 'rt') as fin:
-                for vector in fin:
-                    #vector = fin.readline()
-                    problem = PLSatProblem(vector)
-                    problem.run_ttprover()
-                    row += 1
-                    fout.write(str(row)+','+problem.sat+'\n')
-
-    def translate_matrix_into_clauses(cls, clause):
-        zero = 0
-        pl_clause = 'or('
-        for i, x in enumerate(clause):
-            if x == '0':
-                zero += 1
-                continue
-            elif x == '1':
-                pl_clause += 'p'+str(i)+','
-            elif x == '2':
-                pl_clause += 'not(p'+str(i)+'),'
-            else:
-                pass
-
-        pl_clause = pl_clause.strip(',')
-        pl_clause += ')'
-
-        if zero == len(clause):# all are zeros
-            return 'F' #The empty clause
-        elif len(clause)-zero == 1:# single proposition
-            pl_clause = pl_clause.replace('or(', '')# remove 'or(' and ')'
-            return pl_clause[0:len(pl_clause)-1]
-        else:
-            return pl_clause

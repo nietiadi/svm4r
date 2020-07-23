@@ -4,6 +4,7 @@ import itertools
 import csv
 
 
+
 def write_list_of_clause_sets_to_file(num_of_propositions=2, include_empty_clause=False):
     """
     the csv file consisting of all combinations of different clauses
@@ -13,11 +14,11 @@ def write_list_of_clause_sets_to_file(num_of_propositions=2, include_empty_claus
     if include_empty_clause:
         num_of_clauses = 3 ** num_of_propositions;
         fname = 'data/list_of_clause_sets_containing_' + \
-                str(num_of_propositions) + '_propositoins.csv'
+                str(num_of_propositions) + '_propositions.csv'
     else:
         num_of_clauses = 3 ** num_of_propositions - 1;
         fname = 'data/list_of_clause_sets_containing_' + \
-                str(num_of_propositions) + '_propositoins_without_the_empty_clause.csv'
+                str(num_of_propositions) + '_propositions_without_the_empty_clause.csv'
 
     proofs = itertools.product(range(0, 2), repeat=num_of_clauses)
 

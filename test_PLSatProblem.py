@@ -1,6 +1,6 @@
 import unittest
 import random
-from PLSatProblem import PLSatProblem
+from pl_sat_problem import PLSatProblem
 
 
 class TestPLSatProblem(unittest.TestCase):
