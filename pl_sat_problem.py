@@ -168,9 +168,9 @@ end_problem.
         return 'data/clauses_for_'+str(cls.num_propositions)+'_propositions.csv'
 
     def run_ctlrp(self):
-        with open('ztest', 'w') as fout:
+        with open('z_ctlrp_input', 'w') as fout:
             fout.write(self.problem)
-        with os.popen('./ctlrp21_sourceforge/ctlrp21_x86_64 ztest') as pipe:
+        with os.popen('./ctlrp21_sourceforge/ctlrp21_x86_64 z_ctlrp_input') as pipe:
             result = pipe.read()
         try:
             index = result.index('Unsatisfiable')

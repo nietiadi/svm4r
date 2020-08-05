@@ -5,6 +5,8 @@ import csv
 import os
 import xml.etree.ElementTree as ET
 import ttprover.ttprover as ttp
+import prime_numbers
+import logging
 
 class PLSatProblemXML:
 
@@ -21,6 +23,7 @@ class PLSatProblemXML:
         cls.num_propositions = num_propositions
         cls.all_clauses = cls.load_all_clauses()
         cls.all_clauses = cls.all_clauses[1:] # Remove the empty clause
+        cls.all_clauses_in_numbers = cls.convert_all_clauses_to_numbers()
         cls.all_pl_clauses = cls.load_all_pl_clauses()
 
 
@@ -32,6 +35,20 @@ class PLSatProblemXML:
         self.select_clauses = selected_clauses
         self.problem = self.create_xml_input()
         self.sat = None
+
+
+    @classmethod
+    def convert_all_clauses_to_numbers(cls):
+        numbers = list()
+        for clause in cls.all_clauses:
+            product = 1
+            for i, prop in enumerate(clause):
+               if prop == '1':
+                   product*= prime_numbers.prime_numbers_100[i]
+               elif prop == '2':
+                   product*= prime_numbers.prime_numbers_100[i]**2
+            numbers.append(product)
+        return numbers
 
 
     @classmethod
@@ -117,73 +134,60 @@ class PLSatProblemXML:
         prover = ttp.TruthTableProver(input_string=problem_str)
         self.sat = prover.run(test_satisfiability=True)
 
-
-# for testing
-    """
-if __name__ == '__main__':
-    PLSatProblem.init_class_properties(2)
-
-    problem = PLSatProblem('1,0,0,0,0,0,0,0,0,1')
-    for i, (c, pl) in enumerate(zip(problem.all_clauses, problem.all_pl_clauses), start=1):
-        print(i, c, pl)
-
-    problem = PLSatProblem('1,0,0,0,0,0,0,1')
-    print(problem.problem)
-    #for i, (c, pl) in enumerate(zip(problem.all_clauses, problem.all_pl_clauses), start=1):
-        #print(i, c, pl)
-    #print(str(problem.load_all_clauses()))
-    #print(str(problem.load_all_pl_clauses()))
-    #print(PLSatProblem.translate_matrix_into_clauses(['0', '0']))
-    #print(PLSatProblem.translate_matrix_into_clauses(['1', '2']))
-    #print(PLSatProblem.translate_matrix_into_clauses(['0', '2']))
-    #print(PLSatProblem.translate_matrix_into_clauses(['2', '0']))
-
-    problem = PLSatProblem('1,1,1,1,1,1,1,1')
-    print(problem.problem)
-    """
-
-if __name__ == '__main__':
-    no_prop = 2
-    PLSatProblemXML.init_class_properties(no_prop)
-
-    version = 2
-
-    # write the simple version of data for ML
-    # row number + satisfiability
-    if version == 1:
+    @classmethod
+    def write_result_version1(cls):
+        # write the simple version of data for ML
+        # row number + satisfiability
         row = 0
-        with open('./data/'+str(no_prop)+'_prop_version1_xml.cvs', 'wt') as fout:
-            with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
+        with open('./data/' + str(cls.num_propositions) + '_prop_version1_xml.cvs', 'wt') as fout:
+            with open('./data/list_of_clause_sets_containing_' + str(cls.num_propositions) +
+                      '_propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
                     problem = PLSatProblemXML(vector)
                     problem.run_ttprover()
                     row += 1
-                    fout.write(str(row)+','+problem.sat+'\n')
+                    fout.write(str(row) + ',' + problem.sat + '\n')
 
-    # write another  version of data for ML
-    # the vector of selected clauses + satisfiability
-    if version == 2:
-        with open('./data/'+str(no_prop)+'_prop_version2_xml.cvs', 'wt') as fout:
-            with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
+
+    @classmethod
+    def write_result_version2(cls):
+        # write another  version of data for ML
+        # the vector of selected clauses + satisfiability
+        with open('./data/' + str(cls.num_propositions) + '_prop_version2_xml.cvs', 'wt') as fout:
+            with open('./data/list_of_clause_sets_containing_' + str(cls.num_propositions) +
+                      '_propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
                     problem = PLSatProblemXML(vector)
                     problem.run_ttprover()
-                    fout.write(vector.strip()+','+problem.sat+'\n')
+                    fout.write(vector.strip() + ',' + problem.sat + '\n')
 
-    # write the 3rd version of data for ML
-    # complex vector + satisfiability
-    # each element of the vector is a product of prime numbers
-    # for example, p0 or ~p1:
-    # p0 is 2, p1 is 3, ~p1 is 3x3, so p0 or ~p1 is equal to 2x3x3 = 18.
-    if version == 3:
-        with open('./data/'+str(no_prop)+'_prop_version3.cvs', 'wt') as fout:
-            with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
+    @classmethod
+    def write_result_version3(cls):
+        # write the 3rd version of data for ML
+        # complex vector + satisfiability
+        # each element of the vector is a product of prime numbers
+        # for example, p0 or ~p1:
+        # p0 is 2, p1 is 3, ~p1 is 3x3, so p0 or ~p1 is equal to 2x3x3 = 18.
+        with open('./data/' + str(cls.num_propositions) + '_prop_version3_xml.cvs', 'wt') as fout:
+            with open('./data/list_of_clause_sets_containing_' + str(cls.num_propositions) +
+                      '_propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
-                    #vector = fin.readline()
-                    problem = PLSatProblem(vector)
-                    problem.run_ctlrp()
-                    fout.write(vector.strip()+','+problem.sat+'\n')
+                    problem = PLSatProblemXML(vector)
+                    problem.run_ttprover()
+                    #:w
+                    # print(vector.strip())
+                    index = 0
+                    for i, j in zip(vector, cls.all_clauses_in_numbers):
+
+                        vector[index] = str(int(i)*j)
+                        index+=1
+                    fout.write(vector.strip() + ',' + problem.sat + '\n')
+
+
+if __name__ == '__main__':
+    no_prop = 2
+    PLSatProblemXML.init_class_properties(no_prop)
+    #PLSatProblemXML.write_result_version1()
+    #PLSatProblemXML.write_result_version2()
+    PLSatProblemXML.write_result_version3()
 

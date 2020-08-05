@@ -2,11 +2,17 @@ import sys
 import os
 import xml.etree.ElementTree as ET
 from itertools import product
+import logging
 
 class TruthTableProver:
     OPERATORS = ('and', 'or', 'not', 'imp')
 
     def __init__(self, input_file=None, input_string=None):
+
+        #logging.basicConfig(level=logging.DEBUG, format='%(message)s')
+        #logging.basicConfig(level=logging.INFO, format='%(message)s')
+        logging.basicConfig(level=logging.WARNING, format='%(message)s')
+
         if input_file != None:
             tree = ET.parse(input_file)
             self.root = tree.getroot()
@@ -16,9 +22,10 @@ class TruthTableProver:
         self.pset = self.set_prop(self.root)
         self.plist = list(self.pset)
 
+
     def print_formula(self, node):
         str = ''
-        # print('current node:', node.tag, len(node))
+        logging.debug('current node:', node.tag, len(node))
         if (len(node) != 0):
             str += node.tag + '('
             for child in node:
@@ -98,40 +105,40 @@ class TruthTableProver:
             self.cal_not(node)
 
     def run(self, test_satisfiability=True, test_validity=False):
-        print("Input:\n" + ET.tostring(self.root, encoding='unicode'))
-        print("The set of all propositions is " + str(self.pset))
+        logging.info("Input:\n" + ET.tostring(self.root, encoding='unicode'))
+        logging.info("The set of all propositions is " + str(self.pset))
 
         count = 0
         final_result = set()
         for item in product(('true', 'false'), repeat=len(self.pset)):
             # copy the tree. Each time temp_tree will be changed.
             temp_root = ET.fromstring(ET.tostring(self.root, encoding='unicode'))
-            print(str(count) + '. ' + self.assign_props(temp_root, item))
+            logging.info(str(count) + '. ' + self.assign_props(temp_root, item))
             count += 1
             #print(ET.tostring(temp_root, encoding='unicode'))
-            print(self.print_formula(temp_root))
+            logging.info(self.print_formula(temp_root))
 
             self.prove(temp_root)
 
-            #print(ET.tostring(temp_root, encoding='unicode'))
-            print(self.print_formula(temp_root))
-            print('result: ' + temp_root.tag + '\n')
+            logging.debug(ET.tostring(temp_root, encoding='unicode'))
+            logging.info(self.print_formula(temp_root))
+            logging.info('result: ' + temp_root.tag + '\n')
             final_result = final_result | {temp_root.tag}
 
         if test_satisfiability:
             if 'true' not in final_result:
-                print('========\nfinal result: unsatisfiable\n\n')
+                logging.info('========\nfinal result: unsatisfiable\n\n')
                 return 'unsat'
             else:
-                print('========\nfinal result: satisfiable\n\n')
+                logging.info('========\nfinal result: satisfiable\n\n')
                 return 'sat'
 
         if test_validity:
             if 'false' not in final_result:
-                print('========\nfinal result: valid\n\n')
+                logging.info('========\nfinal result: valid\n\n')
                 return 'valid'
             else:
-                print('========\nfinal result: not valid\n\n')
+                logging.info('========\nfinal result: not valid\n\n')
                 return 'not valid'
 
 
@@ -139,17 +146,17 @@ class TruthTableProver:
 #### Main
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        print('Wrong arguments')
+        logging.warning('Wrong arguments')
         sys.exit(0)
     elif not os.path.isfile(sys.argv[1]):
-        print('File does not exist.')
+        logging.warning('File does not exist.')
         sys.exit(0)
     else:
         input_file = sys.argv[1]
 
     #prover = TruthTableProver(input_file)
-    #print(prover.run(test_satisfiability=True))
+    #logging.info(prover.run(test_satisfiability=True))
 
     prover = TruthTableProver(input_string='<and><p0/><not><p0/></not></and>')
-    print(prover.run(test_satisfiability=True))
+    logging.info(prover.run(test_satisfiability=True))
 

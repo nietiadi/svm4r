@@ -3,6 +3,8 @@ from itertools import product
 import sys
 import os
 
+# Replace by ttprover.py
+
 OPERATORS = ('and', 'or', 'not', 'imp')
 #BOOLS = ('false', 'true')
 
