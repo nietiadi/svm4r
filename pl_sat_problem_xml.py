@@ -20,6 +20,8 @@ class PLSatProblemXML:
         call this before making any PLSatProblem instance
         :param num_propositions: the total number of propositions in this problem
         """
+        #logging.basicConfig(level=logging.DEBUG)
+
         cls.num_propositions = num_propositions
         cls.all_clauses = cls.load_all_clauses()
         cls.all_clauses = cls.all_clauses[1:] # Remove the empty clause
@@ -174,14 +176,16 @@ class PLSatProblemXML:
                 for vector in fin:
                     problem = PLSatProblemXML(vector)
                     problem.run_ttprover()
-                    #:w
-                    # print(vector.strip())
                     index = 0
-                    for i, j in zip(vector, cls.all_clauses_in_numbers):
-
-                        vector[index] = str(int(i)*j)
+                    new_vector = vector.split(',')
+                    for i, j in zip(new_vector, cls.all_clauses_in_numbers):
+                        new_vector[index] = str(int(i)*j)
                         index+=1
-                    fout.write(vector.strip() + ',' + problem.sat + '\n')
+                    new_vector_str = str(new_vector)[1:-2]
+                    new_vector_str = new_vector_str.replace('\'', '')
+                    new_vector_str = new_vector_str.replace(' ', '')
+                    logging.debug('v3: '+new_vector_str)
+                    fout.write(new_vector_str + ',' + problem.sat + '\n')
 
 
 if __name__ == '__main__':

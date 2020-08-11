@@ -2,10 +2,16 @@ import unittest
 import ttprover.ttprover as pr
 import pl_sat_problem_xml as xml
 
+import logging
+
+#cls.mylog = logging.getLogger('xml')
+#cls.mylog.setLevel(level)
 
 class TestPLSatProblemXML(unittest.TestCase):
     def setUp(self):
-        pass
+        self.mylog = logging.getLogger('test.xml')
+        #self.mylog.setLevel(logging.DEBUG)
+        self.mylog.setLevel(logging.INFO)
 
     def tearDown(self):
         pass
@@ -35,14 +41,15 @@ class TestPLSatProblemXML(unittest.TestCase):
         self.assertEqual(36, numbers[7])
 
     def test_version3(self):
-        with open('./data/' + str(xml.PLSatProblemXML.num_propositions) + '_prop_version3_xml.cvs', 'rt') as fin:
+        with open('./data/' + str(xml.PLSatProblemXML.num_propositions) +
+                  '_prop_version3_xml.cvs', 'rt') as fin:
             i = 0
             for line in fin:
-                print(line)
+                self.mylog.debug(line)
                 if i==0:
-                    self.assertEqual('0,0,0,0,0,0,0,36,sat', line)
+                    self.assertEqual('0,0,0,0,0,0,0,36,sat', line.strip())
                 elif i==26:
-                    self.assertEqual('0,0,0,6,18,0,12,36,unsat', line)
+                    self.assertEqual('0,0,0,6,18,0,12,36,unsat', line.strip())
                 i+=1
             self.assertGreater(i, 0) # make sure the file is not empty
 
@@ -51,4 +58,5 @@ class TestPLSatProblemXML(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    TestPLSatProblemXML.init_loger(logging.DEBUG)
     unittest.main()

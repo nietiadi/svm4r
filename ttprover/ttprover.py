@@ -25,7 +25,7 @@ class TruthTableProver:
 
     def print_formula(self, node):
         str = ''
-        logging.debug('current node:', node.tag, len(node))
+        #logging.debug('current node:', node.tag, len(node))
         if (len(node) != 0):
             str += node.tag + '('
             for child in node:

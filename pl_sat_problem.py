@@ -3,6 +3,8 @@ Each instance of PLSatProblem represents a propositional logic satisfiability pr
 """
 import csv
 import os
+import logging
+from pl_sat_problem_xml import PLSatProblemXML
 
 class PLSatProblem:
 
@@ -16,6 +18,9 @@ class PLSatProblem:
         call this before making any PLSatProblem instance
         :param num_propositions: the total number of propositions in this problem
         """
+        cls.mylog = logging.getLogger('sat')
+        cls.mylog.setLevel(logging.INFO)
+
         cls.num_propositions = num_propositions
         cls.all_clauses = cls.load_all_clauses()
         cls.all_clauses = cls.all_clauses[1:] # Remove the empty clause
@@ -124,7 +129,6 @@ end_problem.
     def create_ctlrp_input_body(self):
         body = ''
         for i, s in enumerate(self.select_clauses.split(',')):
-            #print('--'+str(i)+','+s)
             if int(s) != 0:
                 body += PLSatProblem.all_pl_clauses[i]+','
         body = body.strip(',') # remove the last comma and space
@@ -136,7 +140,6 @@ end_problem.
 
         body = ''
         for i, s in enumerate(self.select_clauses.split(',')):
-            #print('--'+str(i)+','+s)
             if int(s) != 0:
                 body += PLSatProblem.all_pl_clauses[i]+', '
         body = body.strip(', ') # remove the last comma and space
@@ -186,78 +189,72 @@ end_problem.
         except ValueError:
             pass
 
+    @classmethod
+    def write_result_version1(cls):
+        # write the simple version of data for ML
+        # row number + satisfiability
+        row = 0
+        with open('./data/' + str(cls.num_propositions) + '_prop_version1.cvs', 'wt') as fout:
+            with open('./data/list_of_clause_sets_containing_2_' +
+                      'propositions_without_the_empty_clause.csv', 'rt') as fin:
+                for vector in fin:
+                    problem = PLSatProblem(vector)
+                    problem.run_ctlrp()
+                    row += 1
+                    fout.write(str(row) + ',' + problem.sat + '\n')
 
 
-# for testing
-    """
-if __name__ == '__main__':
-    PLSatProblem.init_class_properties(2)
+    @classmethod
+    def write_result_version2(cls):
+        # write another  version of data for ML
+        # the vector of selected clauses + satisfiability
+        with open('./data/' + str(cls.num_propositions) + '_prop_version2.cvs', 'wt') as fout:
+            with open('./data/list_of_clause_sets_containing_2_' +
+                      'propositions_without_the_empty_clause.csv', 'rt') as fin:
+                for vector in fin:
+                    problem = PLSatProblem(vector)
+                    problem.run_ctlrp()
+                    fout.write(vector.strip() + ',' + problem.sat + '\n')
 
-    problem = PLSatProblem('1,0,0,0,0,0,0,0,0,1')
-    for i, (c, pl) in enumerate(zip(problem.all_clauses, problem.all_pl_clauses), start=1):
-        print(i, c, pl)
 
-    problem = PLSatProblem('1,0,0,0,0,0,0,1')
-    print(problem.problem)
-    #for i, (c, pl) in enumerate(zip(problem.all_clauses, problem.all_pl_clauses), start=1):
-        #print(i, c, pl)
-    #print(str(problem.load_all_clauses()))
-    #print(str(problem.load_all_pl_clauses()))
-    #print(PLSatProblem.translate_matrix_into_clauses(['0', '0']))
-    #print(PLSatProblem.translate_matrix_into_clauses(['1', '2']))
-    #print(PLSatProblem.translate_matrix_into_clauses(['0', '2']))
-    #print(PLSatProblem.translate_matrix_into_clauses(['2', '0']))
+    @classmethod
+    def write_result_version3(cls):
+        # write the 3rd version of data for ML
+        # complex vector + satisfiability
+        # each element of the vector is a product of prime numbers
+        # for example, p0 or ~p1:
+        # p0 is 2, p1 is 3, ~p1 is 3x3, so p0 or ~p1 is equal to 2x3x3 = 18.
+        with open('./data/' + str(cls.num_propositions) + '_prop_version3_xml.cvs', 'wt') as fout:
+            with open('./data/list_of_clause_sets_containing_' + str(cls.num_propositions) +
+                      '_propositions_without_the_empty_clause.csv', 'rt') as fin:
+                for vector in fin:
+                    problem = PLSatProblem(vector)
+                    problem.run_ctlrp()
+                    index = 0
+                    new_vector = vector.split(',')
 
-    problem = PLSatProblem('1,1,1,1,1,1,1,1')
-    print(problem.problem)
-    """
+                    # get help from PLSatProblemXML
+                    PLSatProblemXML.init_class_properties(cls.num_propositions)
+                    for i, j in zip(new_vector, PLSatProblemXML.all_clauses_in_numbers):
+                        new_vector[index] = str(int(i)*j)
+                        index+=1
+                    new_vector_str = str(new_vector)[1:-2]
+                    new_vector_str = new_vector_str.replace('\'', '')
+                    new_vector_str = new_vector_str.replace(' ', '')
+                    logging.debug('v3: '+new_vector_str)
+                    fout.write(new_vector_str + ',' + problem.sat + '\n')
+
 
 if __name__ == '__main__':
     # Generate data
     no_prop = 2
     PLSatProblem.init_class_properties(no_prop)
+    #PLSatProblem.write_result_version1()
+    #PLSatProblem.write_result_version2()
+    PLSatProblem.write_result_version3()
 
-    version = '2'
 
-    # write the simple version of data for ML
-    # row number + satisfiability
-    if version == 1:
-        row = 0
-        with open('./data/'+str(no_prop)+'_prop_version1.cvs', 'wt') as fout:
-            with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
-                for vector in fin:
-                    #vector = fin.readline()
-                    problem = PLSatProblem(vector)
-                    problem.run_ctlrp()
-                    row += 1
-                    fout.write(str(row)+','+problem.sat+'\n')
 
-    # write another  version of data for ML
-    # the vector of selected clauses + satisfiability
-    if version == 2:
-        with open('./data/'+str(no_prop)+'_prop_version2.cvs', 'wt') as fout:
-            with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
-                for vector in fin:
-                    #vector = fin.readline()
-                    problem = PLSatProblem(vector)
-                    problem.run_ctlrp()
-                    fout.write(vector.strip()+','+problem.sat+'\n')
 
-    # write the 3rd version of data for ML
-    # complex vector + satisfiability
-    # each element of the vector is a product of prime numbers
-    # for example, p0 or ~p1:
-    # p0 is 2, p1 is 3, ~p1 is 3x3, so p0 or ~p1 is equal to 2x3x3 = 18.
-    if version == 3:
-        with open('./data/'+str(no_prop)+'_prop_version3.cvs', 'wt') as fout:
-            with open('./data/list_of_clause_sets_containing_2_' +
-                  'propositions_without_the_empty_clause.csv', 'rt') as fin:
-                for vector in fin:
-                    #vector = fin.readline()
-                    problem = PLSatProblem(vector)
-                    problem.run_ctlrp()
-                    fout.write(vector.strip()+','+problem.sat+'\n')
 
 

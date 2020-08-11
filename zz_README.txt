@@ -21,7 +21,6 @@
 4.test_PLSatProblemXML.py
 
 current_job:
-2_prop_version3_xml.cvs
 2_prop_version3.cvs
 2 in 2_prop_versionX.cvs needs to be changed
 refine all the codes

@@ -1,4 +1,7 @@
 import unittest
+
+import sys
+sys.path.append('..')  # import the parent directory
 from pl_sat_problem import PLSatProblem
 
 class TestPLSatProblemLinux(unittest.TestCase):
@@ -16,5 +19,5 @@ class TestPLSatProblemLinux(unittest.TestCase):
         problem.run_ctlrp()
         self.assertEqual(my_cal, problem.sat)
 
-
-unittest.main()
+if __name__ == '__main__':
+    unittest.main()
