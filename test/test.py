@@ -1,3 +1,4 @@
 title = """
 """
+
 print(title.title())

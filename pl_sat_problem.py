@@ -245,6 +245,7 @@ end_problem.
                     fout.write(new_vector_str + ',' + problem.sat + '\n')
 
 
+
 if __name__ == '__main__':
     # Generate data
     no_prop = 2
