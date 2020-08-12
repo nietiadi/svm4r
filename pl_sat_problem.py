@@ -224,7 +224,7 @@ end_problem.
         # each element of the vector is a product of prime numbers
         # for example, p0 or ~p1:
         # p0 is 2, p1 is 3, ~p1 is 3x3, so p0 or ~p1 is equal to 2x3x3 = 18.
-        with open('./data/' + str(cls.num_propositions) + '_prop_version3_xml.cvs', 'wt') as fout:
+        with open('./data/' + str(cls.num_propositions) + '_prop_version3.cvs', 'wt') as fout:
             with open('./data/list_of_clause_sets_containing_' + str(cls.num_propositions) +
                       '_propositions_without_the_empty_clause.csv', 'rt') as fin:
                 for vector in fin:
